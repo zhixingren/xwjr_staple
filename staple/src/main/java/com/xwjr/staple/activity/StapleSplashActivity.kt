@@ -29,6 +29,8 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
     private var updateData: StapleUpdateBean.DataBean.NativeVersionBean = StapleUpdateBean.DataBean.NativeVersionBean()
     //活动数据
     private var activityData: StapleActivityBean = StapleActivityBean()
+    //开屏页面延迟时间
+    private var splashTime = 2000L
 
     companion object {
         const val REQUEST_PERMISSION_UPDATE = 600
@@ -176,22 +178,22 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
                     activityData = (Gson().fromJson(data, StapleActivityBean::class.java))
                     if (activityData.success && activityData.data != null) {
                         if (StapleActivityBeanManager.isNeedShowActivity(this, activityData.data!!)) {
-                            customDealActivityData(activityData.data)
+                            dealActivityData(activityData.data)
                         } else {
-                            customDealActivityData()
+                            dealActivityData()
                         }
                     } else {
-                        customDealActivityData()
+                        dealActivityData()
                     }
                 } catch (e: Exception) {
                     logI("发生异常：" + "活动数据解析失败")
                     e.printStackTrace()
-                    customDealActivityData()
+                    dealActivityData()
                 }
             }
             StapleHttpUrl.activityInfoUrl().err() -> {
                 logI("发生异常：获取活动数据失败")
-                customDealActivityData()
+                dealActivityData()
             }
             StapleHttpUrl.splashImgInfoUrl() -> {
                 try {
@@ -302,7 +304,13 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
         }
     }
 
+
     //自定义处理数据
     abstract fun customDealActivityData(latestData: StapleActivityBean.DataBean? = null)
 
+    private fun dealActivityData(latestData: StapleActivityBean.DataBean? = null) {
+        laterDeal(splashTime) {
+            customDealActivityData(latestData)
+        }
+    }
 }
