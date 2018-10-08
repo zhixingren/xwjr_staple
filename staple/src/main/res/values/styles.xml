@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--启动页-->
+    <style name="AppSplash" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/staple_wwxhb_window_bg</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <!-- 自定义样式的name属性用于引用，父亲是默认的style -->
+    <style name="StapleUpdateProgressBar" parent="@android:style/Widget.ProgressBar.Horizontal">
+        <item name="android:height">10dp</item>
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:indeterminateDrawable">@android:drawable/progress_indeterminate_horizontal</item>
+        <item name="android:progressDrawable">@drawable/staple_update_progress</item>
+    </style>
+</resources>
