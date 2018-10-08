@@ -11,6 +11,7 @@ object StapleConfig {
     const val XWJR = "XWJR"//希望金融来源
     const val WWXHB = "WWXHB"//望望先花b端来源
     const val XWB = "XWB"//希望宝来源
+    const val APPHUB = "APPHUB"//apphub来源
 
 
     private val fileDir = Environment.getExternalStorageDirectory().path//下载的apk存储路径
@@ -25,7 +26,8 @@ object StapleConfig {
                       wwxhc: (() -> Unit)? = null,
                       xwjr: (() -> Unit)? = null,
                       xwb: (() -> Unit)? = null,
-                      wwxjk: (() -> Unit)? = null) {
+                      wwxjk: (() -> Unit)? = null,
+                      apphub: (() -> Unit)? = null) {
         when (appSource) {
             WWXHB -> {
                 if (wwxhb != null) {
@@ -50,6 +52,11 @@ object StapleConfig {
             WWXJK -> {
                 if (wwxjk != null) {
                     wwxjk()
+                }
+            }
+            APPHUB -> {
+                if (apphub != null) {
+                    apphub()
                 }
             }
         }
@@ -93,6 +100,14 @@ object StapleConfig {
                     "8c3653d0-2e42-11e8-8435-7345f0d2ca6a"
                 } else {
                     "697417b0-9824-11e7-ba0b-17dfb53ee53f"
+                }
+            }
+            APPHUB -> {
+                if (isDebug) {
+                    "4c8f8a00-acdf-11e8-8e18-470ba9df8a5f"
+                } else {
+                    logI("apphub无生产环境")
+                    ""
                 }
             }
             else -> {
@@ -142,6 +157,14 @@ object StapleConfig {
                     "c99671ef1617b6fe19ba1d3cb34550cc"
                 }
             }
+            APPHUB -> {
+                if (isDebug) {
+                    "b90b516eb998f34724ee35a94b2fd928"
+                } else {
+                    logI("apphub无生产环境")
+                    ""
+                }
+            }
             else -> {
                 logI("发生异常：未找到对应的AppSecret")
                 ""
@@ -181,6 +204,10 @@ object StapleConfig {
                 createFileDir("WWXJK", "img")
                 "$fileDir/WWXJK/img"
             }
+            APPHUB -> {
+                createFileDir("APPHUB", "img")
+                "$fileDir/APPHUB/img"
+            }
             else -> {
                 logI("发生异常：未找到对应的App来源,无法创建相应的文件夹")
                 ""
@@ -207,6 +234,9 @@ object StapleConfig {
             }
             WWXJK -> {
                 "望望小金卡.png"
+            }
+            APPHUB -> {
+                "APPHUB.png"
             }
             else -> {
                 logI("发生异常：未找到对应的App来源,无法创建相应的文件夹")
@@ -240,6 +270,10 @@ object StapleConfig {
                 createFileDir("WWXJK", "apk")
                 "$fileDir/WWXJK/apk"
             }
+            APPHUB ->{
+                createFileDir("APPHUB", "apk")
+                "$fileDir/APPHUB/apk"
+            }
             else -> {
                 logI("发生异常：未找到对应的App来源,无法创建相应的文件夹")
                 ""
@@ -267,6 +301,9 @@ object StapleConfig {
             WWXJK -> {
                 "望望小金卡.apk"
             }
+            APPHUB->{
+                "APPHUB.apk"
+            }
             else -> {
                 logI("发生异常：未找到对应的App来源,无法创建相应的文件夹")
                 ""
@@ -293,6 +330,9 @@ object StapleConfig {
             }
             WWXJK -> {
                 "安装失败，请前往'文件管理--WWXJK--apk'手动安装"
+            }
+            APPHUB -> {
+                "安装失败，请前往'文件管理--APPHUB--apk'手动安装"
             }
             else -> {
                 logI("发生异常：未找到对应的App来源,无法给出提示信息")

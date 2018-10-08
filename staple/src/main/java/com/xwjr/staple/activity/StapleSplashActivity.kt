@@ -39,7 +39,6 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.staple_activity_splash)
         httpPresenter = StapleHttpPresenter(this, this)
-        StapleConfig.appSource = StapleConfig.XWB
         init()
     }
 
@@ -96,6 +95,9 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
                     },
                     wwxjk = {
                         setWindowBG(res = resources.getDrawable(R.drawable.staple_wwxjk_window_bg))
+                    },
+                    apphub = {
+
                     }
             )
         } catch (e: Exception) {
