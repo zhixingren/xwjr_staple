@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
+import cn.jpush.android.api.JPushInterface
 import com.google.gson.Gson
 import com.xwjr.staple.R
 
@@ -49,16 +50,14 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
      */
     @Suppress("DEPRECATION")
     private fun init() {
-
         setStatusBar()
-
         queryUpdateInfo()
         querySplashInfo()
+
 
         checkPermission(REQUEST_PERMISSION_WINDOW_BG) {
             setWindowBackground()
         }
-
     }
 
     /**
@@ -99,7 +98,7 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
                         setWindowBG(res = resources.getDrawable(R.drawable.staple_wwxjk_window_bg))
                     },
                     apphub = {
-
+                        setWindowBG(resId = R.drawable.staple_apphub_window_bg)
                     }
             )
         } catch (e: Exception) {
