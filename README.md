@@ -7,12 +7,7 @@
     implementation 'com.github.zhuxiaohang2016:xwjr_staple:版本号'
 
 ### 配置
-    
-    StapleConfig.INSTANCE.setAppSource(StapleConfig.APPHUB);//哪个app
-    StapleConfig.INSTANCE.setDebug(true);//是否是debug模式
-    JPushInterface.setDebugMode(true);//jpush是否是debug模式
-    JPushInterface.init(this);//jpush初始化
-    
+
 gradle配置
     
     android{
@@ -24,6 +19,12 @@ gradle配置
              ]
           }
     }
+    
+ ### 初始化
+    StapleConfig.INSTANCE.setAppSource(StapleConfig.APPHUB);//哪个app
+    StapleConfig.INSTANCE.setDebug(true);//是否是debug模式
+    JPushInterface.setDebugMode(true);//jpush是否是debug模式
+    JPushInterface.init(this);//jpush初始化
     
  ### 使用
  
