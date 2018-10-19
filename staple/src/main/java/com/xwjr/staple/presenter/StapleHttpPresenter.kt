@@ -106,7 +106,7 @@ class StapleHttpPresenter(private val context: Context, private val contract: St
         override fun handleMessage(msg: Message) {
             when (msg.what) {
                 200 -> {
-                    contract.statusBack(msg.data.getString("url"), msg.data.getInt("progress"))
+                    contract.statusBack(msg.data.getString("url"), msg.data)
                 }
                 500 -> {
                     contract.statusBack(msg.data.getString("url").err(), -1)
@@ -167,6 +167,8 @@ class StapleHttpPresenter(private val context: Context, private val contract: St
                         val bundle = Bundle()
                         bundle.putString("url", url)
                         bundle.putInt("progress", progress)
+                        bundle.putLong("total", total)
+                        bundle.putLong("sum", sum)
                         message.what = 200
                         message.data = bundle
                         myHandler.sendMessage(message)

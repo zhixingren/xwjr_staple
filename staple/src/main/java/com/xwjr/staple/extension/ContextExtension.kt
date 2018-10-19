@@ -1,7 +1,10 @@
 package com.xwjr.staple.extension
 
+import android.app.AppOpsManager
 import android.content.Context
+import android.os.Build
 import android.view.View
+import java.lang.reflect.InvocationTargetException
 
 /**
  * 获取App版本号
@@ -18,38 +21,43 @@ fun Context.getVersionName(): String {
     }
 }
 
-//popwindow统一提示
-fun Context.showPopTip(layoutId:Int, bText: String = "确定", closeable: Boolean = true, deal: () -> Any = {}) {
+/**
+ * 查看通知权限是否开启
+ */
+fun Context.isNotificationEnabled(): Boolean {
+    try {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            val mAppOps = this.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
 
-//    try {
-//        val view = View.inflate(this,layoutId, null).apply {
-//            tv_content.text = content
-//            tv_sure.text = bText
-//            iv_close.visibility = if (closeable) View.VISIBLE else View.GONE
-//        }
-//
-//        val popupWindow = PopupWindow(view,
-//                ViewGroup.LayoutParams.MATCH_PARENT,
-//                ViewGroup.LayoutParams.MATCH_PARENT)
-//
-//        view.tv_sure.setOnClickListener {
-//            deal()
-//            popupWindow.dismiss()
-//        }
-//        view.iv_close.setOnClickListener { popupWindow.dismiss() }
-//
-//        popupWindow.apply {
-//            isClippingEnabled = false
-//            isFocusable = true// 取得焦点
-//            isOutsideTouchable = true
-//            isTouchable = true
-//            setBackgroundDrawable(BitmapDrawable())
-//            showAtLocation(view, Gravity.BOTTOM, 0, 0)
-//        }
-//    } catch (e: Exception) {
-//        e.printStackTrace()
-//        showToast("无法加载相关弹层页面")
-//    }
-    //进入退出的动画
-//    popupWindow.setAnimationStyle(R.style.pop_show_hide)
+            val appInfo = this.applicationInfo
+            val pkg = this.applicationContext.packageName
+            val uid = appInfo.uid
+
+            var appOpsClass: Class<*>? = null
+            /* Context.APP_OPS_MANAGER */
+            appOpsClass = Class.forName(AppOpsManager::class.java.name)
+            val checkOpNoThrowMethod = appOpsClass!!.getMethod("checkOpNoThrow", Integer.TYPE, Integer.TYPE,
+                    String::class.java)
+            val opPostNotificationValue = appOpsClass.getDeclaredField("OP_POST_NOTIFICATION")
+
+            val value = opPostNotificationValue.get(Int::class.java) as Int
+            return checkOpNoThrowMethod.invoke(mAppOps, value, uid, pkg) as Int == AppOpsManager.MODE_ALLOWED
+
+        } else {
+            return true
+        }
+    } catch (e: ClassNotFoundException) {
+        e.printStackTrace()
+    } catch (e: NoSuchMethodException) {
+        e.printStackTrace()
+    } catch (e: NoSuchFieldException) {
+        e.printStackTrace()
+    } catch (e: InvocationTargetException) {
+        e.printStackTrace()
+    } catch (e: IllegalAccessException) {
+        e.printStackTrace()
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+    return false
 }

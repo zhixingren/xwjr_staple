@@ -54,6 +54,8 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
         queryUpdateInfo()
         querySplashInfo()
 
+        logI("是否开启了通知权限：" + isNotificationEnabled())
+
 
         checkPermission(REQUEST_PERMISSION_WINDOW_BG) {
             setWindowBackground()

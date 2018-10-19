@@ -21,7 +21,7 @@ import com.xwjr.staple.presenter.StapleHttpPresenter
 import kotlinx.android.synthetic.main.staple_update_hint.view.*
 import java.io.File
 
-class UpdateDialogFragment : DialogFragment(), StapleHttpContract {
+class UpdateDialogFragmentWWXHB : DialogFragment(), StapleHttpContract {
 
 
     private var cancelAble = false
@@ -33,8 +33,8 @@ class UpdateDialogFragment : DialogFragment(), StapleHttpContract {
 
 
     companion object {
-        fun newInstance(cancelAble: Boolean, downloadUrl: String, version: String, content: String): UpdateDialogFragment {
-            return UpdateDialogFragment().apply {
+        fun newInstance(cancelAble: Boolean, downloadUrl: String, version: String, content: String): UpdateDialogFragmentWWXHB {
+            return UpdateDialogFragmentWWXHB().apply {
                 arguments = Bundle().apply {
                     putBoolean("cancelAble", cancelAble)
                     putString("downloadUrl", downloadUrl)

@@ -15,6 +15,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         StapleConfig.INSTANCE.setAppSource(StapleConfig.APPHUB);
+        StapleConfig.INSTANCE.setDebug(true);
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
         JPushInterface.setAlias(this, 5233, "a0000000");
