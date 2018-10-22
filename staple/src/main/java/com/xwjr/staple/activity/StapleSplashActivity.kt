@@ -14,6 +14,7 @@ import com.xwjr.staple.constant.StapleConfig
 import com.xwjr.staple.constant.StapleHttpUrl
 import com.xwjr.staple.extension.*
 import com.xwjr.staple.fragment.UpdateDialogFragment
+import com.xwjr.staple.fragment.UpdateDialogFragmentWWXHB
 import com.xwjr.staple.manager.StapleActivityBeanManager
 import com.xwjr.staple.manager.StapleSplashBeanManager
 import com.xwjr.staple.model.StapleActivityBean
@@ -244,25 +245,29 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
      * 处理升级相关数据
      */
     private fun dealUpdateData() {
-        if (updateData.forceUpdate) {
-            //强制升级
-            logI("强制升级")
-            UpdateDialogFragment
-                    .newInstance(false, updateData.downloadUrl!!, "V" + updateData.version!!, updateData.changeLog!!)
-                    .show(supportFragmentManager)
-        } else {
-            //非强制升级
-            logI("非强制升级")
-            UpdateDialogFragment
-                    .newInstance(true, updateData.downloadUrl!!, "V" + updateData.version!!, updateData.changeLog!!).apply {
-                        show(supportFragmentManager)
-                        setCancelUpdateListener(object : UpdateDialogFragment.CancelUpdate {
-                            override fun cancel() {
-                                logI("稍后升级")
-                                queryActivityInfo()
+        when (StapleConfig.appSource) {
+            StapleConfig.WWXHB -> {
+                if (updateData.forceUpdate) {
+                    //强制升级
+                    logI("强制升级")
+                    UpdateDialogFragmentWWXHB
+                            .newInstance(false, updateData.downloadUrl!!, "V" + updateData.version!!, updateData.changeLog!!)
+                            .show(supportFragmentManager)
+                } else {
+                    //非强制升级
+                    logI("非强制升级")
+                    UpdateDialogFragmentWWXHB
+                            .newInstance(true, updateData.downloadUrl!!, "V" + updateData.version!!, updateData.changeLog!!).apply {
+                                show(supportFragmentManager)
+                                setCancelUpdateListener(object : UpdateDialogFragmentWWXHB.CancelUpdate {
+                                    override fun cancel() {
+                                        logI("稍后升级")
+                                        queryActivityInfo()
+                                    }
+                                })
                             }
-                        })
-                    }
+                }
+            }
         }
     }
 

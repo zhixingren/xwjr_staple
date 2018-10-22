@@ -14,7 +14,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        StapleConfig.INSTANCE.setAppSource(StapleConfig.APPHUB);
+        StapleConfig.INSTANCE.setAppSource(StapleConfig.WWXHB);
         StapleConfig.INSTANCE.setDebug(true);
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);

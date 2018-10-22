@@ -4,12 +4,16 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.FragmentManager
 import android.text.Html
+import android.util.DisplayMetrics
 import android.view.KeyEvent
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import com.xwjr.staple.R
 import com.xwjr.staple.constant.StapleConfig
@@ -18,7 +22,7 @@ import com.xwjr.staple.extension.err
 import com.xwjr.staple.extension.logI
 import com.xwjr.staple.presenter.StapleHttpContract
 import com.xwjr.staple.presenter.StapleHttpPresenter
-import kotlinx.android.synthetic.main.staple_update_hint.view.*
+import kotlinx.android.synthetic.main.staple_update_hint_wwxhb.view.*
 import java.io.File
 
 class UpdateDialogFragmentWWXHB : DialogFragment(), StapleHttpContract {
@@ -58,7 +62,7 @@ class UpdateDialogFragmentWWXHB : DialogFragment(), StapleHttpContract {
     @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialogBuilder = AlertDialog.Builder(activity)
-        updateView = activity?.layoutInflater?.inflate(R.layout.staple_update_hint, null, false)
+        updateView = activity?.layoutInflater?.inflate(R.layout.staple_update_hint_wwxhb, null, false)
         dialogBuilder.setView(updateView)
         val alertDialog = dialogBuilder.create()
 
@@ -99,7 +103,18 @@ class UpdateDialogFragmentWWXHB : DialogFragment(), StapleHttpContract {
                 else -> return@setOnKeyListener false
             }
         }
+        alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
         return alertDialog
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (dialog != null) {
+            val dm = DisplayMetrics()
+            activity?.windowManager?.defaultDisplay?.getMetrics(dm)
+            dialog.window.setLayout((dm.widthPixels * 0.75).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+        }
     }
 
     fun show(fragmentManager: FragmentManager) {
