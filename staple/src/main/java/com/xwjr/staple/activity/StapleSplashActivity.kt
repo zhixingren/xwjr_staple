@@ -247,26 +247,18 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
     private fun dealUpdateData() {
         when (StapleConfig.appSource) {
             StapleConfig.WWXHB -> {
-                if (updateData.forceUpdate) {
-                    //强制升级
-                    logI("强制升级")
-                    UpdateDialogFragmentWWXHB
-                            .newInstance(false, updateData.downloadUrl!!, "V" + updateData.version!!, updateData.changeLog!!)
-                            .show(supportFragmentManager)
-                } else {
-                    //非强制升级
-                    logI("非强制升级")
-                    UpdateDialogFragmentWWXHB
-                            .newInstance(true, updateData.downloadUrl!!, "V" + updateData.version!!, updateData.changeLog!!).apply {
-                                show(supportFragmentManager)
-                                setCancelUpdateListener(object : UpdateDialogFragmentWWXHB.CancelUpdate {
-                                    override fun cancel() {
-                                        logI("稍后升级")
-                                        queryActivityInfo()
-                                    }
-                                })
-                            }
-                }
+                //强制升级
+                logI("是否强制升级：${updateData.forceUpdate}")
+                UpdateDialogFragmentWWXHB
+                        .newInstance(updateData.forceUpdate, updateData.downloadUrl!!, "V" + updateData.version!!, updateData.changeLog!!).apply {
+                            setCancelUpdateListener(object : UpdateDialogFragmentWWXHB.CancelUpdate {
+                                override fun cancel() {
+                                    logI("稍后升级")
+                                    queryActivityInfo()
+                                }
+                            })
+                            show(supportFragmentManager)
+                        }
             }
         }
     }

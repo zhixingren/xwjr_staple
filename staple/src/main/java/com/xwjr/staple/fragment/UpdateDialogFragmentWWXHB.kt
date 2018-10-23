@@ -28,7 +28,7 @@ import java.io.File
 class UpdateDialogFragmentWWXHB : DialogFragment(), StapleHttpContract {
 
 
-    private var cancelAble = false
+    private var forceUpdate = true
     private var downloadUrl = ""
     private var version = ""
     private var content = ""
@@ -37,10 +37,10 @@ class UpdateDialogFragmentWWXHB : DialogFragment(), StapleHttpContract {
 
 
     companion object {
-        fun newInstance(cancelAble: Boolean, downloadUrl: String, version: String, content: String): UpdateDialogFragmentWWXHB {
+        fun newInstance(forceUpdate: Boolean, downloadUrl: String, version: String, content: String): UpdateDialogFragmentWWXHB {
             return UpdateDialogFragmentWWXHB().apply {
                 arguments = Bundle().apply {
-                    putBoolean("cancelAble", cancelAble)
+                    putBoolean("forceUpdate", forceUpdate)
                     putString("downloadUrl", downloadUrl)
                     putString("version", version)
                     putString("content", content)
@@ -51,7 +51,7 @@ class UpdateDialogFragmentWWXHB : DialogFragment(), StapleHttpContract {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        cancelAble = arguments?.getBoolean("cancelAble")!!
+        forceUpdate = arguments?.getBoolean("forceUpdate")!!
         downloadUrl = arguments?.getString("downloadUrl")!!
         version = arguments?.getString("version")!!
         content = arguments?.getString("content")!!
@@ -66,9 +66,27 @@ class UpdateDialogFragmentWWXHB : DialogFragment(), StapleHttpContract {
         dialogBuilder.setView(updateView)
         val alertDialog = dialogBuilder.create()
 
+
+        //默认隐藏进度条,显示按钮
+        updateView?.group_progress?.visibility = View.GONE
+        updateView?.tv_updateNow?.visibility = View.VISIBLE
+        updateView?.tv_updateLater?.visibility = View.VISIBLE
+
         //立即更新点击事件
         updateView?.tv_updateNow?.setOnClickListener {
             httpPresenter?.downLoadApk(downloadUrl)
+            updateView?.group_progress?.visibility = View.VISIBLE
+            updateView?.tv_updateNow?.visibility = View.GONE
+            updateView?.tv_updateLater?.visibility = View.GONE
+        }
+
+        //是否显示稍后更新按钮
+        if (forceUpdate) {
+            updateView?.tv_updateLater?.visibility = View.GONE
+            updateView?.view_bottomBlank?.visibility = View.VISIBLE
+        } else {
+            updateView?.tv_updateLater?.visibility = View.VISIBLE
+            updateView?.view_bottomBlank?.visibility = View.GONE
         }
 
         //稍后更新点击事件
@@ -77,12 +95,6 @@ class UpdateDialogFragmentWWXHB : DialogFragment(), StapleHttpContract {
             cancelUpdateListener?.cancel()
         }
 
-        //是否显示稍后更新按钮
-        if (cancelAble) {
-            updateView?.tv_updateLater?.visibility = View.VISIBLE
-        } else {
-            updateView?.tv_updateLater?.visibility = View.GONE
-        }
         //版本号
         updateView?.tv_version?.text = version
 
@@ -110,6 +122,7 @@ class UpdateDialogFragmentWWXHB : DialogFragment(), StapleHttpContract {
 
     override fun onStart() {
         super.onStart()
+        //设置dialog宽
         if (dialog != null) {
             val dm = DisplayMetrics()
             activity?.windowManager?.defaultDisplay?.getMetrics(dm)
@@ -125,20 +138,15 @@ class UpdateDialogFragmentWWXHB : DialogFragment(), StapleHttpContract {
     override fun statusBack(i: String, data: Any) {
         when (i) {
             downloadUrl -> {
-                updateView?.tv_updateNow?.isEnabled = false
+                val deltaTrans = (updateView?.pb?.width!! / 100.0)
                 data as Bundle
-                updateView?.pb?.progress = data.getInt("progress")
-                val percent = "$data%"
-                updateView?.tv_updateNow?.text = percent
-                updateView?.tv_updateNow?.setOnClickListener { }
-                if (data == 100) {
-                    updateView?.tv_updateNow?.isEnabled = true
-                    updateView?.tv_updateNow?.text = "安装"
-                    updateView?.tv_updateNow?.setOnClickListener {
-                        install()
-                    }
+                val percent = data.getInt("progress")
+                val percentDisplay = "${data.getInt("progress")}%"
+                updateView?.tv_progress?.translationX = ((percent) * deltaTrans).toFloat()
+                updateView?.pb?.progress = percent
+                updateView?.tv_progress?.text = percentDisplay
+                if (percent == 100) {
                     install()
-
                 }
 
             }
