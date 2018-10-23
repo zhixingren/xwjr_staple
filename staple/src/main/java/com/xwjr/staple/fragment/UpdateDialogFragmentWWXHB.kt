@@ -146,6 +146,14 @@ class UpdateDialogFragmentWWXHB : DialogFragment(), StapleHttpContract {
                 updateView?.pb?.progress = percent
                 updateView?.tv_progress?.text = percentDisplay
                 if (percent == 100) {
+                    updateView?.group_progress?.visibility = View.GONE
+                    updateView?.tv_updateNow?.visibility = View.VISIBLE
+                    updateView?.tv_updateLater?.visibility = View.GONE
+                    updateView?.view_bottomBlank?.visibility = View.VISIBLE
+                    updateView?.tv_updateNow?.text = "安装"
+                    updateView?.tv_updateNow?.setOnClickListener {
+                        install()
+                    }
                     install()
                 }
 

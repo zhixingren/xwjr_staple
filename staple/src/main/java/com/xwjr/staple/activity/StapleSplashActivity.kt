@@ -32,7 +32,7 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
     //活动数据
     private var activityData: StapleActivityBean = StapleActivityBean()
     //开屏页面延迟时间
-    private var splashTime = 2000L
+    private var splashTime = 3000L
 
     companion object {
         const val REQUEST_PERMISSION_UPDATE = 600
