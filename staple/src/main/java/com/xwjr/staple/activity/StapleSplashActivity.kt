@@ -37,6 +37,7 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
     companion object {
         const val REQUEST_PERMISSION_UPDATE = 600
         const val REQUEST_PERMISSION_WINDOW_BG = 601
+        const val REQUEST_PERMISSION_PHONE_STATE = 602
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,15 +53,11 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
     @Suppress("DEPRECATION")
     private fun init() {
         setStatusBar()
-        queryUpdateInfo()
-        querySplashInfo()
-
         logI("是否开启了通知权限：" + isNotificationEnabled())
 
-
-        checkPermission(REQUEST_PERMISSION_WINDOW_BG) {
-            setWindowBackground()
-        }
+        queryUpdateInfo()
+        querySplashInfo()
+        setWindowBackground()
     }
 
     /**
@@ -269,13 +266,14 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
             if (deal != null)
                 deal()
         } else {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+            if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED &&
+                    checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
                     checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 if (deal != null)
                     deal()
             } else {
                 //系统会显示一个请求权限的提示对话框，当前应用不能配置和修改这个对话框
-                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE), requestCode)
+                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE), requestCode)
             }
         }
     }
@@ -284,18 +282,18 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             REQUEST_PERMISSION_UPDATE -> {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                     dealUpdateData()
                 } else {
-                    logI("未授予读写权限，无法下载app")
+                    logI("未授予相应权限，无法下载app")
                     Toast.makeText(this, "未授予读写权限，无法下载app", Toast.LENGTH_SHORT).show()
                 }
             }
             REQUEST_PERMISSION_WINDOW_BG -> {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                     setWindowBackground()
                 } else {
-                    logI("未授予读写权限，无法获取windowBg数据")
+                    logI("未授予相应权限，无法获取windowBg数据")
                     setDefaultWindowBackground()
                 }
             }
