@@ -2,7 +2,6 @@
 <resources>
     <!--启动页-->
     <style name="AppSplash" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@drawable/staple_wwxhb_window_bg</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowNoTitle">true</item>
     </style>

@@ -7,7 +7,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@drawable/staple_update_bg_wwxhb"
+        android:background="@mipmap/staple_update_bg_wwxhb"
         app:layout_constraintDimensionRatio="976:1310">
 
 
@@ -57,7 +57,7 @@
                 android:id="@+id/tv_progress"
                 android:layout_width="36sp"
                 android:layout_height="21sp"
-                android:background="@drawable/stape_update_alert_wwxhb"
+                android:background="@mipmap/stape_update_alert_wwxhb"
                 android:gravity="center"
                 android:paddingBottom="5dp"
                 android:text="0%"

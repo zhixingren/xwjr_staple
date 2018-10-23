@@ -86,22 +86,22 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
         try {
             StapleConfig.dealAppSource(
                     wwxhb = {
-                        setWindowBG(resId = R.drawable.staple_wwxhb_window_bg)
+                        setWindowBG(resId = R.mipmap.staple_wwxhb_window_bg)
                     },
                     wwxhc = {
-                        setWindowBG(resId = R.drawable.staple_wwxhc_null_window_bg)
+                        setWindowBG(resId = R.mipmap.staple_wwxhc_null_window_bg)
                     },
                     xwjr = {
-                        setWindowBG(resId = R.drawable.staple_xwjr_window_bg)
+                        setWindowBG(resId = R.mipmap.staple_xwjr_window_bg)
                     },
                     xwb = {
-                        setWindowBG(res = resources.getDrawable(R.drawable.staple_xwb_window_bg))
+                        setWindowBG(res = resources.getDrawable(R.mipmap.staple_xwb_window_bg))
                     },
                     wwxjk = {
-                        setWindowBG(res = resources.getDrawable(R.drawable.staple_wwxjk_window_bg))
+                        setWindowBG(res = resources.getDrawable(R.mipmap.staple_wwxjk_window_bg))
                     },
                     apphub = {
-                        setWindowBG(resId = R.drawable.staple_apphub_window_bg)
+                        setWindowBG(resId = R.mipmap.staple_apphub_window_bg)
                     }
             )
         } catch (e: Exception) {
