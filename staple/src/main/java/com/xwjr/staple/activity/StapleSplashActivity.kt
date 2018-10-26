@@ -1,19 +1,15 @@
 package com.xwjr.staple.activity
 
 import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.widget.Toast
-import cn.jpush.android.api.JPushInterface
 import com.google.gson.Gson
 import com.xwjr.staple.R
 
 import com.xwjr.staple.constant.StapleConfig
 import com.xwjr.staple.constant.StapleHttpUrl
 import com.xwjr.staple.extension.*
-import com.xwjr.staple.fragment.UpdateDialogFragment
 import com.xwjr.staple.fragment.UpdateDialogFragmentWWXHB
 import com.xwjr.staple.manager.StapleActivityBeanManager
 import com.xwjr.staple.manager.StapleSplashBeanManager
@@ -24,10 +20,7 @@ import com.xwjr.staple.permission.PermissionRequest
 import com.xwjr.staple.presenter.StapleHttpContract
 import com.xwjr.staple.presenter.StapleHttpPresenter
 import java.io.File
-import com.xwjr.staple.permission.PermissionUtils
 import com.xwjr.staple.permission.PermissionRequest.PermissionListener
-import com.xwjr.staple.permission.PermissionRequest.getInstance
-import java.security.Permission
 import java.util.ArrayList
 
 
@@ -42,11 +35,6 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
     private var splashTime = 3000L
     private var request: PermissionRequest? = null
 
-    companion object {
-        const val REQUEST_PERMISSION_UPDATE = 600
-        const val REQUEST_PERMISSION_WINDOW_BG = 601
-        const val REQUEST_PERMISSION_PHONE_STATE = 602
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +57,9 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
         setWindowBackground()
     }
 
-    //处理权限相关
+    /**
+     * 处理权限相关
+     */
     private fun dealPermission() {
         val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             arrayOf(Manifest.permission.READ_PHONE_STATE,
@@ -118,6 +108,7 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
 
     }
 
+    @Suppress("DEPRECATION")
     private fun setDefaultWindowBackground() {
         try {
             StapleConfig.dealAppSource(
@@ -296,46 +287,6 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
             }
         }
     }
-
-//    /**校验读写权限并执行相应方法*/
-//    private fun checkPermission(requestCode: Int, deal: (() -> Any)? = null) {
-//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-//            if (deal != null)
-//                deal()
-//        } else {
-//            if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED &&
-//                    checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
-//                    checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-//                if (deal != null)
-//                    deal()
-//            } else {
-//                //系统会显示一个请求权限的提示对话框，当前应用不能配置和修改这个对话框
-//                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE), requestCode)
-//            }
-//        }
-//    }
-
-//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        when (requestCode) {
-//            REQUEST_PERMISSION_UPDATE -> {
-//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
-//                    dealUpdateData()
-//                } else {
-//                    logI("未授予相应权限，无法下载app")
-//                    Toast.makeText(this, "未授予读写权限，请授权后使用", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//            REQUEST_PERMISSION_WINDOW_BG -> {
-//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
-//                    setWindowBackground()
-//                } else {
-//                    logI("未授予相应权限，无法获取windowBg数据")
-//                    setDefaultWindowBackground()
-//                }
-//            }
-//        }
-//    }
 
 
     //自定义处理数据
