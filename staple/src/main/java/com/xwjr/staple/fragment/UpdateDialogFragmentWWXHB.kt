@@ -1,5 +1,6 @@
 package com.xwjr.staple.fragment
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
@@ -20,6 +21,7 @@ import com.xwjr.staple.constant.StapleConfig
 import com.xwjr.staple.extension.MyFileProvider
 import com.xwjr.staple.extension.err
 import com.xwjr.staple.extension.logI
+import com.xwjr.staple.permission.PermissionUtils
 import com.xwjr.staple.presenter.StapleHttpContract
 import com.xwjr.staple.presenter.StapleHttpPresenter
 import kotlinx.android.synthetic.main.staple_update_hint_wwxhb.view.*
@@ -74,10 +76,15 @@ class UpdateDialogFragmentWWXHB : DialogFragment(), StapleHttpContract {
 
         //立即更新点击事件
         updateView?.tv_updateNow?.setOnClickListener {
-            httpPresenter?.downLoadApk(downloadUrl)
-            updateView?.group_progress?.visibility = View.VISIBLE
-            updateView?.tv_updateNow?.visibility = View.GONE
-            updateView?.tv_updateLater?.visibility = View.GONE
+            if (PermissionUtils.checkPermission(context,
+                            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE),
+                            "读写权限")) {
+                httpPresenter?.downLoadApk(downloadUrl)
+                updateView?.group_progress?.visibility = View.VISIBLE
+                updateView?.tv_updateNow?.visibility = View.GONE
+                updateView?.tv_updateLater?.visibility = View.GONE
+            }
+
         }
 
         //是否显示稍后更新按钮
@@ -115,7 +122,7 @@ class UpdateDialogFragmentWWXHB : DialogFragment(), StapleHttpContract {
                 else -> return@setOnKeyListener false
             }
         }
-        alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         return alertDialog
     }
@@ -126,7 +133,7 @@ class UpdateDialogFragmentWWXHB : DialogFragment(), StapleHttpContract {
         if (dialog != null) {
             val dm = DisplayMetrics()
             activity?.windowManager?.defaultDisplay?.getMetrics(dm)
-            dialog.window.setLayout((dm.widthPixels * 0.75).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+            dialog.window?.setLayout((dm.widthPixels * 0.75).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
         }
     }
 
