@@ -8,9 +8,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/BankCardLib" />
-            <option value="$PROJECT_DIR$/IDCardLib" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/bankCardLib" />
+            <option value="$PROJECT_DIR$/idCardLib" />
             <option value="$PROJECT_DIR$/livenesslib" />
             <option value="$PROJECT_DIR$/staple" />
           </set>

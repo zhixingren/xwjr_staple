@@ -18,7 +18,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.xwjr.staple.R
 import com.xwjr.staple.constant.StapleConfig
-import com.xwjr.staple.extension.MyFileProvider
+import com.xwjr.staple.manager.MyFileProvider
 import com.xwjr.staple.extension.err
 import com.xwjr.staple.extension.logI
 import com.xwjr.staple.permission.PermissionUtils

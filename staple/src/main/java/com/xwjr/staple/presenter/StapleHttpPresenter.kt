@@ -261,6 +261,4 @@ class StapleHttpPresenter(private val context: Context, private val contract: St
             }
         })
     }
-
-
 }

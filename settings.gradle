@@ -1,1 +1,1 @@
-include ':app', ':staple', ':IDCardLib', ':BankCardLib', ':livenesslib'
+include ':app', ':staple', ':idCardLib', ':bankCardLib', ':livenesslib'

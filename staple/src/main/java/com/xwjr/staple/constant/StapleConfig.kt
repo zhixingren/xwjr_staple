@@ -1,6 +1,7 @@
 package com.xwjr.staple.constant
 
 import android.os.Environment
+import com.xwjr.staple.extension.logE
 import com.xwjr.staple.extension.logI
 import com.xwjr.staple.extension.md5
 import java.io.File
@@ -111,7 +112,7 @@ object StapleConfig {
                 }
             }
             else -> {
-                logI("发生异常：未找到对应的AppKey")
+                logE("发生异常：未找到对应的AppKey")
                 ""
             }
         }
@@ -166,7 +167,7 @@ object StapleConfig {
                 }
             }
             else -> {
-                logI("发生异常：未找到对应的AppSecret")
+                logE("发生异常：未找到对应的AppSecret")
                 ""
             }
         }
@@ -209,7 +210,7 @@ object StapleConfig {
                 "$fileDir/APPHUB/img"
             }
             else -> {
-                logI("发生异常：未找到对应的App来源,无法创建相应的文件夹")
+                logE("发生异常：未找到对应的App来源,无法创建相应的文件夹")
                 ""
             }
         }
@@ -239,7 +240,7 @@ object StapleConfig {
                 "APPHUB.png"
             }
             else -> {
-                logI("发生异常：未找到对应的App来源,无法创建相应的文件夹")
+                logE("发生异常：未找到对应的App来源,无法创建相应的文件夹")
                 ""
             }
         }
@@ -270,12 +271,12 @@ object StapleConfig {
                 createFileDir("WWXJK", "apk")
                 "$fileDir/WWXJK/apk"
             }
-            APPHUB ->{
+            APPHUB -> {
                 createFileDir("APPHUB", "apk")
                 "$fileDir/APPHUB/apk"
             }
             else -> {
-                logI("发生异常：未找到对应的App来源,无法创建相应的文件夹")
+                logE("发生异常：未找到对应的App来源,无法创建相应的文件夹")
                 ""
             }
         }
@@ -301,11 +302,11 @@ object StapleConfig {
             WWXJK -> {
                 "望望小金卡.apk"
             }
-            APPHUB->{
+            APPHUB -> {
                 "APPHUB.apk"
             }
             else -> {
-                logI("发生异常：未找到对应的App来源,无法创建相应的文件夹")
+                logE("发生异常：未找到对应的App来源,无法创建相应的文件夹")
                 ""
             }
         }
@@ -335,7 +336,7 @@ object StapleConfig {
                 "安装失败，请前往'文件管理--APPHUB--apk'手动安装"
             }
             else -> {
-                logI("发生异常：未找到对应的App来源,无法给出提示信息")
+                logE("发生异常：未找到对应的App来源,无法给出提示信息")
                 ""
             }
         }
@@ -353,6 +354,40 @@ object StapleConfig {
             file = File(filePath)
             if (!file.exists()) {
                 file.mkdir()
+            }
+        }
+    }
+
+    /**
+     * 获取风控中心来源
+     */
+    fun getRiskShieldSource(): String {
+        return when (appSource) {
+            WWXHB -> {
+                logE("发生异常：wwxhb无风控中心来源数据")
+                ""
+            }
+            WWXHC -> {
+                "xssq"
+            }
+            XWJR -> {
+                logE("发生异常：xwjr无风控中心来源数据")
+                ""
+            }
+            XWB -> {
+                logE("发生异常：xwb无风控中心来源数据")
+                ""
+            }
+            WWXJK -> {
+                "wwxjk"
+            }
+            APPHUB -> {
+                logE("发生异常：apphub无风控中心来源数据")
+                ""
+            }
+            else -> {
+                logE("发生异常：未找到对应的App来源")
+                ""
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.xwjr.staple.activity
 
 import android.Manifest
+import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -33,14 +34,11 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
     private var activityData: StapleActivityBean = StapleActivityBean()
     //开屏页面延迟时间
     private var splashTime = 3000L
-    private var request: PermissionRequest? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.staple_activity_splash)
         httpPresenter = StapleHttpPresenter(this, this)
-        request = PermissionRequest.getInstance(this)
         init()
     }
 
@@ -49,6 +47,7 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
      */
     @Suppress("DEPRECATION")
     private fun init() {
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         setStatusBar()
         dealPermission()
         logI("是否开启了通知权限：" + isNotificationEnabled())
@@ -65,15 +64,18 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
             arrayOf(Manifest.permission.READ_PHONE_STATE,
                     Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.CAMERA,
                     Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
         } else {
             arrayOf(Manifest.permission.READ_PHONE_STATE,
                     Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.CAMERA,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
-        request?.requestPermission(object : PermissionListener {
+        PermissionRequest.getInstance(this)?.requestPermission(object : PermissionListener {
             override fun permissionGranted() {
                 logI("permissionGranted")
             }

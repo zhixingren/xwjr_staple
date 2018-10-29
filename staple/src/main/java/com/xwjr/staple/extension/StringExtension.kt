@@ -2,8 +2,6 @@ package com.xwjr.staple.extension
 
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
-import kotlin.experimental.and
-
 /**
  * .err()
  */

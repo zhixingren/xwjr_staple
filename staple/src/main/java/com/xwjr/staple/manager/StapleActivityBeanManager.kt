@@ -42,7 +42,7 @@ object StapleActivityBeanManager {
     /**
      * 保存最新的活动信息
      */
-    fun saveActivityInfo(context: Context, stapleActivityData: StapleActivityBean.DataBean) {
+    private fun saveActivityInfo(context: Context, stapleActivityData: StapleActivityBean.DataBean) {
         try {
             saveActivityInfo(context,
                     stapleActivityData.title!!,
@@ -60,7 +60,7 @@ object StapleActivityBeanManager {
     /**
      * 获取本地存储的活动信息
      */
-    fun getActivityInfo(context: Context): StapleActivityBean.DataBean {
+    private fun getActivityInfo(context: Context): StapleActivityBean.DataBean {
         return try {
             val sharedPreferences = context.getSharedPreferences(STAPLE_TABLE, Context.MODE_PRIVATE)
             StapleActivityBean.DataBean().apply {
@@ -110,7 +110,7 @@ object StapleActivityBeanManager {
                 saveActivityInfo(context, stapleActivityData)
                 return true
             }
-        }catch (e:Exception){
+        } catch (e: Exception) {
             logI("校验是否需要提示活动异常")
             e.printStackTrace()
             return false

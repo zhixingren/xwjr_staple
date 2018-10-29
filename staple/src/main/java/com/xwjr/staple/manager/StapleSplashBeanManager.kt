@@ -3,6 +3,7 @@ package com.xwjr.staple.manager
 import android.annotation.SuppressLint
 import android.content.Context
 import com.xwjr.staple.extension.logI
+
 object StapleSplashBeanManager {
     private const val STAPLE_TABLE = "STAPLE_TABLE"
     private const val IMG_URL = "SPLASH_IMG_URL"
@@ -27,7 +28,7 @@ object StapleSplashBeanManager {
     /**
      * 获取本地存储的活动信息
      */
-    fun getSplashInfo(context: Context): String {
+    private fun getSplashInfo(context: Context): String? {
         return try {
             val sharedPreferences = context.getSharedPreferences(STAPLE_TABLE, Context.MODE_PRIVATE)
             sharedPreferences.getString(IMG_URL, "")
@@ -49,7 +50,7 @@ object StapleSplashBeanManager {
                 false
             } else {
                 logI("需要更新开屏图")
-                saveSplashInfo(context,imgUrl)
+                saveSplashInfo(context, imgUrl)
                 true
             }
         } catch (e: Exception) {

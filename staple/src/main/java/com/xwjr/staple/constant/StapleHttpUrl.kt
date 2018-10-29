@@ -33,13 +33,27 @@ object StapleHttpUrl {
      * app活动
      */
     fun activityInfoUrl(): String {
-        return getBaseUrl()+"/apphub/activity/latest/"+StapleConfig.getAppKey()
-    }
-    /**
-     * app活动
-     */
-    fun splashImgInfoUrl(): String {
-        return getBaseUrl()+"/apphub/splash/latest/"+StapleConfig.getAppKey()
+        return getBaseUrl() + "/apphub/activity/latest/" + StapleConfig.getAppKey()
     }
 
+    /**
+     * app开屏页
+     */
+    fun splashImgInfoUrl(): String {
+        return getBaseUrl() + "/apphub/splash/latest/" + StapleConfig.getAppKey()
+    }
+
+    /**
+     * 上传身份证识别数据
+     */
+    fun upLoadIDCardInfo(): String {
+        return getBaseUrl() + "/riskshield/verify/ocrIdCard/MYSELF"
+    }
+
+    /**
+     * 上传活体识别数据
+     */
+    fun upLoadLiveInfo():String{
+        return getBaseUrl()+"/riskshield/verify/faceId/MYSELF"
+    }
 }

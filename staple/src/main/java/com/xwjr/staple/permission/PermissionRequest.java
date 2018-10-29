@@ -13,17 +13,13 @@ public class PermissionRequest {
 
     private static PermissionRequest permissionRequest;
 
-    public static PermissionRequest getInstance(FragmentActivity activity){
-        if(permissionRequest == null) {
-            permissionRequest = new PermissionRequest(activity);
-        }
+    public static PermissionRequest getInstance(FragmentActivity activity) {
+        permissionRequest = new PermissionRequest(activity);
         return permissionRequest;
     }
 
-    public static PermissionRequest getInstance(Fragment fragment){
-        if(permissionRequest == null) {
-            permissionRequest = new PermissionRequest(fragment);
-        }
+    public static PermissionRequest getInstance(Fragment fragment) {
+        permissionRequest = new PermissionRequest(fragment);
         return permissionRequest;
     }
 
@@ -38,32 +34,33 @@ public class PermissionRequest {
 
     /**
      * 获取fragment单例
+     *
      * @param fragmentManager
      * @return
      */
     private PermissionFragment getFragmentInstance(FragmentManager fragmentManager) {
-        if(findFragment(fragmentManager)==null) {
+        if (findFragment(fragmentManager) == null) {
             fragment = new PermissionFragment();
             fragmentManager.beginTransaction()
-                    .add(fragment,TAG).commitNow();
+                    .add(fragment, TAG).commitNow();
             return fragment;
         }
         return findFragment(fragmentManager);
     }
 
     private PermissionFragment findFragment(FragmentManager fragmentManager) {
-        return (PermissionFragment)fragmentManager.findFragmentByTag(TAG);
+        return (PermissionFragment) fragmentManager.findFragmentByTag(TAG);
     }
 
     /**
      * 请求权限，根据是否拥有权限，是否拒绝再次请求等调用不同回调
-     * @param listener          请求回调
-     * @param permissions       请求的权限数组
+     *
+     * @param listener    请求回调
+     * @param permissions 请求的权限数组
      */
     public void requestPermission(@NonNull PermissionListener listener, String[] permissions) {
-        fragment.requestPermissions(permissions,listener);
+        fragment.requestPermissions(permissions, listener);
     }
-
 
 
     /**
@@ -77,13 +74,15 @@ public class PermissionRequest {
 
         /**
          * 拒绝授权
-         * @param permissions       被拒绝的权限
+         *
+         * @param permissions 被拒绝的权限
          */
         void permissionDenied(ArrayList<String> permissions);
 
         /**
          * 勾选不再询问按钮，做一些提示
-         * @param permissions       勾选不再询问的权限
+         *
+         * @param permissions 勾选不再询问的权限
          */
         void permissionNeverAsk(ArrayList<String> permissions);
     }
