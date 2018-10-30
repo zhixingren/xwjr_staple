@@ -21,6 +21,7 @@ gradle配置
     }
     
  ### 初始化
+    StapleUtils.init(context);//初始化工具类
     StapleConfig.INSTANCE.setAppSource(StapleConfig.APPHUB);//哪个app
     StapleConfig.INSTANCE.setDebug(true);//是否是debug模式
     JPushInterface.setDebugMode(true);//jpush是否是debug模式
@@ -52,91 +53,7 @@ gradle配置
     staple_xwb_window_bg.png  --  希望宝开屏图
     staple_xwjr_window_bg.png  --  希望金融开屏图
  
- 3.升级功能会自动处理，更改升级弹层UI只需增加同名资源文件，但有一定规则，详见下方代码
- 
-    资源文件xml  staple_update_hint.xml ,文件内组件id必须保持统一，样式可自行调整。
-    
-    <?xml version="1.0" encoding="utf-8"?>
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-        <TextView
-            android:id="@+id/tv_version"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:text="V0.0.1"
-            android:textColor="#339933"
-            android:textSize="20sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_content"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:paddingRight="20dp"
-            android:textSize="14sp"
-            android:paddingBottom="10dp"
-            android:text="升级内容升级内容升级内容升级内容升级内容升级内容升级内容升级内容升级内容升级内容升级内容升级内容"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_version" />
-
-        <ProgressBar
-            android:id="@+id/pb"
-            style="@style/StapleUpdateProgressBar"
-            android:layout_width="0dp"
-            android:layout_height="5dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:progress="0"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_content" />
-
-
-        <TextView
-            android:id="@+id/tv_updateNow"
-            android:layout_width="150dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/staple_update_button"
-            android:gravity="center"
-            android:text="立即更新"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/pb" />
-
-        <TextView
-            android:id="@+id/tv_updateLater"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="5dp"
-            android:textSize="14sp"
-            android:textColor="#999999"
-            android:text="稍后更新"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_updateNow" />
-
-        <View
-            app:layout_constraintTop_toBottomOf="@id/tv_updateLater"
-            android:layout_width="match_parent"
-            android:layout_height="5dp"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
- 
- 4.推送功能目前只支持简单的打开app操作，最好给用户配置alias 和 tag， 详见下方代码
+ 3.推送功能目前只支持简单的打开app操作，最好给用户配置alias 和 tag， 详见下方代码
  
     alias以用户手机号为标准，
  
@@ -159,6 +76,50 @@ gradle配置
      tags.add("A");
      tags.add("B");
      JPushInterface.setTags(this, 5233, tags);
+     
+ 4.身份证识别/活体检测相关功能
+ 
+        //尽量提前调用
+        AuthManager.getIDCardLicense(this)
+        AuthManager.getLivingLicense(this)
+        
+        //初始化authManagerHelper
+         val authManagerHelper = AuthManagerHelper()
+         authManagerHelper.setRiskShieldDataListener(object : AuthManagerHelper.RiskShieldData {
+                                override fun liveData(isApproved: Boolean) {
+                                    //处理活体数据
+                                }
 
+                                override fun idCardData(authIDCardBean: StapleAuthIDCardBean.ResultBean) {
+                                     //处理身份证数据
+                                }
+                            })
+        
+        //开始扫描身份证 activity:当前activity  fragment:当前fragment（可为null）  side：0(正面)1(反面)
+        AuthManager.openScanIdActivity(activity,fragment,side)
+        
+        //开始活体检测 activity:当前activity  fragment:当前fragment（可为null）
+        AuthManager.startLivingDetect(activity,fragment)
+        
+        //onActivityResult固定处理
+         try {
+            if (resultCode == Activity.RESULT_OK)
+                when (requestCode) {
+                    AuthManager.PAGE_INTO_IDCARDSCAN -> {
+                        AuthManager.dealIDCardScan(data!!) { filePath ->
+                            authManagerHelper.upLoadIDCardInfo(filePath)
+                        }
+                    }
+
+                    AuthManager.PAGE_INTO_LIVENESS -> {
+                        AuthManager.dealLivingData(this, data!!) { imagesMap, bestImg, delta ->
+                            authManagerHelper.upLoadLiveData(idName, idNo, delta, imagesMap)
+                        }
+                    }
+                }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
      
       
