@@ -1,10 +1,9 @@
 package com.xwjr.staple.extension
 
 import android.util.Log
-import android.widget.Toast
 import com.xwjr.staple.constant.StapleConfig
 import com.xwjr.staple.util.ToastUtils
-import com.xwjr.staple.util.Utils
+import com.xwjr.staple.util.StapleUtils
 import java.util.*
 
 private const val TAG = "xwjrStaple"
@@ -53,7 +52,7 @@ fun Any.showToast(content: String?) {
 fun Any.showToast(resID: Int?) {
     try {
         if (resID != null) {
-            ToastUtils.showShortToast(Utils.getContext().getString(resID))
+            ToastUtils.showShortToast(StapleUtils.getContext().getString(resID))
         } else {
             logI("toast资源id为空")
         }

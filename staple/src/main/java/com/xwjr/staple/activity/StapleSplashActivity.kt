@@ -12,6 +12,7 @@ import com.xwjr.staple.constant.StapleConfig
 import com.xwjr.staple.constant.StapleHttpUrl
 import com.xwjr.staple.extension.*
 import com.xwjr.staple.fragment.UpdateDialogFragmentWWXHB
+import com.xwjr.staple.fragment.UpdateDialogFragmentWWXJK
 import com.xwjr.staple.manager.StapleActivityBeanManager
 import com.xwjr.staple.manager.StapleSplashBeanManager
 import com.xwjr.staple.model.StapleActivityBean
@@ -272,10 +273,10 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
      * 处理升级相关数据
      */
     private fun dealUpdateData() {
+        logI("是否强制升级：${updateData.forceUpdate}")
         when (StapleConfig.appSource) {
             StapleConfig.WWXHB -> {
                 //强制升级
-                logI("是否强制升级：${updateData.forceUpdate}")
                 UpdateDialogFragmentWWXHB
                         .newInstance(updateData.forceUpdate, updateData.downloadUrl!!, "V" + updateData.version!!, updateData.changeLog!!).apply {
                             setCancelUpdateListener(object : UpdateDialogFragmentWWXHB.CancelUpdate {
@@ -287,6 +288,20 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
                             show(supportFragmentManager)
                         }
             }
+            StapleConfig.WWXJK->{
+                //强制升级
+                UpdateDialogFragmentWWXJK
+                        .newInstance(updateData.forceUpdate, updateData.downloadUrl!!, "V" + updateData.version!!, updateData.changeLog!!).apply {
+                            setCancelUpdateListener(object : UpdateDialogFragmentWWXJK.CancelUpdate {
+                                override fun cancel() {
+                                    logI("稍后升级")
+                                    queryActivityInfo()
+                                }
+                            })
+                            show(supportFragmentManager)
+                        }
+            }
+
         }
     }
 

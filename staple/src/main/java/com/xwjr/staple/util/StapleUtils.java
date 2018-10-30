@@ -9,12 +9,12 @@ import android.content.Context;
  *     desc  : Utils初始化相关
  * </pre>
  */
-public class Utils {
+public class StapleUtils {
 
     @SuppressLint("StaticFieldLeak")
     private static Context context;
 
-    private Utils() {
+    private StapleUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
@@ -24,7 +24,7 @@ public class Utils {
      * @param context 上下文
      */
     public static void init(Context context) {
-        Utils.context = context.getApplicationContext();
+        StapleUtils.context = context.getApplicationContext();
     }
 
     /**

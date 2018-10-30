@@ -6,7 +6,7 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
-    <!-- 自定义样式的name属性用于引用，父亲是默认的style -->
+    <!-- 自定义样式的升级样式 -->
     <style name="StapleUpdateProgressBar" parent="@android:style/Widget.ProgressBar.Horizontal">
         <item name="android:height">10dp</item>
         <item name="android:indeterminateOnly">false</item>
@@ -14,11 +14,18 @@
         <item name="android:progressDrawable">@drawable/staple_update_progress</item>
     </style>
 
-    <!-- 自定义样式的name属性用于引用，父亲是默认的style -->
+    <!-- 自定义样式的升级样式 -->
     <style name="StapleUpdateProgressBarWWXHB" parent="@android:style/Widget.ProgressBar.Horizontal">
         <item name="android:height">10dp</item>
         <item name="android:indeterminateOnly">false</item>
         <item name="android:indeterminateDrawable">@android:drawable/progress_indeterminate_horizontal</item>
         <item name="android:progressDrawable">@drawable/staple_update_progress_wwxhb</item>
+    </style>
+    <!-- 自定义样式的升级样式 -->
+    <style name="StapleUpdateProgressBarWWXJK" parent="@android:style/Widget.ProgressBar.Horizontal">
+        <item name="android:height">10dp</item>
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:indeterminateDrawable">@android:drawable/progress_indeterminate_horizontal</item>
+        <item name="android:progressDrawable">@drawable/staple_update_progress_wwxjk</item>
     </style>
 </resources>

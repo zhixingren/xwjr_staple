@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                                 }
 
                                 override fun idCardData(authIDCardBean: StapleAuthIDCardBean.ResultBean) {
-                                    logI(authIDCardBean.toString())
+
                                 }
                             })
                         }

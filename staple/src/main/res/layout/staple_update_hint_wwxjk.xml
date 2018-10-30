@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@mipmap/staple_update_close_wwxjk"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@mipmap/staple_update_bg_wwxjk"
+            app:layout_constraintDimensionRatio="1196:1524"
+            app:layout_constraintTop_toBottomOf="@id/iv_close">
+
+            <TextView
+                android:id="@+id/tv_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@mipmap/staple_update_version_bg_wwxjk"
+                android:gravity="center"
+                android:text="V0.0.1"
+                android:textColor="#fbf1c1"
+                android:textSize="15sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_flag"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="600:321" />
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="60dp"
+                android:text="升级内容升级内容升级内容升级内容升级内容升级内容升级内容升级内容升级内容升级内容升级内容升级内容"
+                android:textColor="#999999"
+                android:textSize="15sp"
+                app:layout_constraintDimensionRatio="390:200"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_flag"
+                app:layout_constraintWidth_percent="0.65" />
+
+            <TextView
+                android:id="@+id/tv_flag2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:visibility="invisible"
+                app:layout_constraintDimensionRatio="600:589" />
+
+            <TextView
+                android:id="@+id/tv_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="21sp"
+                android:gravity="center"
+                android:text="0%"
+                android:textColor="#249fff"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@id/pb"
+                app:layout_constraintRight_toLeftOf="@id/pb" />
+
+            <ProgressBar
+                android:id="@+id/pb"
+                style="@style/StapleUpdateProgressBarWWXHB"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="3dp"
+                android:progress="0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_flag2" />
+
+            <TextView
+                android:id="@+id/tv_flag4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="60:1"
+                app:layout_constraintTop_toBottomOf="@id/pb" />
+
+            <TextView
+                android:id="@+id/tv_updateHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="WI-FI下更新更快哦！"
+                android:textColor="#cccccc"
+                android:textSize="12sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_flag4" />
+
+            <TextView
+                android:id="@+id/tv_progressHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="新版本正在努力更新中，请稍后"
+                android:textColor="#cccccc"
+                android:textSize="12sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_flag4" />
+
+            <TextView
+                android:id="@+id/tv_updateNow"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="30dp"
+                android:background="@drawable/staple_update_button_wwxjk"
+                android:gravity="center"
+                android:text="立即体验"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@id/tv_flag3"
+                app:layout_constraintDimensionRatio="8:1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintWidth_percent="0.8" />
+
+            <TextView
+                android:id="@+id/tv_flag3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:text=""
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="600:40" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
