@@ -30,8 +30,8 @@ import java.io.*
  */
 object AuthManager {
 
-    val PAGE_INTO_IDCARDSCAN = 100
-    val PAGE_INTO_LIVENESS = 101
+    const val PAGE_INTO_IDCARDSCAN = 100
+    const val PAGE_INTO_LIVENESS = 101
 
     private var idCardLicense = false //身份证扫描联网授权
     private var livingLicense = false //活体检测联网授权
@@ -248,7 +248,7 @@ object AuthManager {
                 val delta = bundle.getString("delta")
                 val images: Map<String, ByteArray> = bundle.getSerializable("images") as Map<String, ByteArray>
                 val image_best = images["image_best"]
-                val image_env = images["image_env"]
+//                val image_env = images["image_env"]
                 var bestBitmap: Bitmap? = null
                 if (image_best != null)
                     bestBitmap = BitmapFactory.decodeByteArray(image_best, 0, image_best.count())

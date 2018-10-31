@@ -3,7 +3,6 @@ package com.xwjr.staple.extension
 import android.app.AppOpsManager
 import android.content.Context
 import android.os.Build
-import android.view.View
 import java.lang.reflect.InvocationTargetException
 
 /**
@@ -33,10 +32,8 @@ fun Context.isNotificationEnabled(): Boolean {
             val pkg = this.applicationContext.packageName
             val uid = appInfo.uid
 
-            var appOpsClass: Class<*>? = null
-            /* Context.APP_OPS_MANAGER */
-            appOpsClass = Class.forName(AppOpsManager::class.java.name)
-            val checkOpNoThrowMethod = appOpsClass!!.getMethod("checkOpNoThrow", Integer.TYPE, Integer.TYPE,
+            val appOpsClass = Class.forName(AppOpsManager::class.java.name)
+            val checkOpNoThrowMethod = appOpsClass.getMethod("checkOpNoThrow", Integer.TYPE, Integer.TYPE,
                     String::class.java)
             val opPostNotificationValue = appOpsClass.getDeclaredField("OP_POST_NOTIFICATION")
 

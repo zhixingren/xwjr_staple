@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     AuthManager.PAGE_INTO_LIVENESS -> {
-                        AuthManager.dealLivingData(this, data!!) { imagesMap, bestImg, delta ->
+                        AuthManager.dealLivingData(this, data!!) { imagesMap, _, delta ->
                             val authManagerHelper = AuthManagerHelper()
                             authManagerHelper.upLoadLiveData("朱小航", "412326199211116919", delta, imagesMap)
                             authManagerHelper.setRiskShieldDataListener(object : AuthManagerHelper.RiskShieldData {

@@ -26,10 +26,11 @@ fun Activity.setStatusBar() {
 /**
  * 设置Window背景
  * resId: 资源id ,
- * res:drawble
+ * res:drawable
  * file:File
  * filePath:图片本地路径地址
  */
+@Suppress("DEPRECATION")
 fun Activity.setWindowBG(resId: Int? = null, res: Drawable? = null, file: File? = null, filePath: String? = null) {
     try {
         if (resId != null) {

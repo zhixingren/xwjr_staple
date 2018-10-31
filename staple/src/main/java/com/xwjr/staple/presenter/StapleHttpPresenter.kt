@@ -106,10 +106,10 @@ class StapleHttpPresenter(private val context: Context, private val contract: St
         override fun handleMessage(msg: Message) {
             when (msg.what) {
                 200 -> {
-                    contract.statusBack(msg.data.getString("url"), msg.data)
+                    contract.statusBack(msg.data.getString("url")!!, msg.data)
                 }
                 500 -> {
-                    contract.statusBack(msg.data.getString("url").err(), -1)
+                    contract.statusBack(msg.data.getString("url")!!.err(), -1)
                 }
             }
             super.handleMessage(msg)
@@ -184,14 +184,12 @@ class StapleHttpPresenter(private val context: Context, private val contract: St
                     myHandler.sendMessage(message)
                 } finally {
                     try {
-                        if (inputStream != null)
-                            inputStream.close()
+                        inputStream?.close()
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
                     try {
-                        if (fos != null)
-                            fos.close()
+                        fos?.close()
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
@@ -246,14 +244,12 @@ class StapleHttpPresenter(private val context: Context, private val contract: St
                     e.printStackTrace()
                 } finally {
                     try {
-                        if (inputStream != null)
-                            inputStream.close()
+                        inputStream?.close()
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
                     try {
-                        if (fos != null)
-                            fos.close()
+                        fos?.close()
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }

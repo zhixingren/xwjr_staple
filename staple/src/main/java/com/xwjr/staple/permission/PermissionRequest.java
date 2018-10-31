@@ -35,8 +35,8 @@ public class PermissionRequest {
     /**
      * 获取fragment单例
      *
-     * @param fragmentManager
-     * @return
+     * @param fragmentManager fragmentManager管理器
+     * @return PermissionFragment
      */
     private PermissionFragment getFragmentInstance(FragmentManager fragmentManager) {
         if (findFragment(fragmentManager) == null) {
