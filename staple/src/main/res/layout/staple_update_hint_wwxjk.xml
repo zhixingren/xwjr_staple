@@ -118,6 +118,14 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_flag4" />
 
             <TextView
+                android:id="@+id/tv_flag3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:text=""
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="600:40" />
+
+            <TextView
                 android:id="@+id/tv_updateNow"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -135,13 +143,6 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintWidth_percent="0.8" />
 
-            <TextView
-                android:id="@+id/tv_flag3"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:text=""
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintDimensionRatio="600:40" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
