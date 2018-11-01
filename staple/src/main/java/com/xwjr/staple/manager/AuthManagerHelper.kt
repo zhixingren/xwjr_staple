@@ -1,5 +1,10 @@
 package com.xwjr.staple.manager
 
+import android.annotation.SuppressLint
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import com.google.gson.Gson
 import com.xwjr.staple.constant.StapleConfig
 import com.xwjr.staple.constant.StapleHttpUrl
@@ -19,6 +24,27 @@ import okhttp3.RequestBody
  * 身份证识别，活体检测功能
  */
 class AuthManagerHelper {
+
+
+    /**
+     * 统一的handler数据发送
+     */
+    private fun sendData(url: String, data: String, code: Int) {
+        Handler(Looper.getMainLooper()).post {
+            when (code) {
+                0 -> {
+                    dealIDCardResponse(url, data)
+                }
+                1 -> {
+                    dealLiveResponse(url, data)
+                }
+                2 -> {
+                    showToast(data)
+                }
+            }
+        }
+    }
+
 
     fun upLoadIDCardInfo(imagePath: String, owner: String = "0") {
         try {
@@ -43,25 +69,29 @@ class AuthManagerHelper {
 
                 override fun onFailure(call: Call, e: IOException) {
                     logE("发生异常：上传身份证识别数据失败 $url")
-                    showToast("网络异常，上传身份证识别数据失败")
+                    sendData("", "网络异常，上传身份证识别数据失败", 2)
                     e.printStackTrace()
                 }
 
                 override fun onResponse(call: Call, response: Response) {
                     val data = response.body()?.string().toString()
-                    logI("返回数据 $url ：\n$data")
-                    val authIDCardBean = Gson().fromJson(data, StapleAuthIDCardBean::class.java)
-                    if (authIDCardBean.checkCodeErrorShow()) {
-                        if (authIDCardBean.result != null)
-                            riskShieldData?.idCardData(authIDCardBean.result!!)
-                        else
-                            showToast("身份证识别，关键数据为空，请重试..")
-                    }
+                    sendData(url, data, 0)
                 }
             })
         } catch (e: Exception) {
             logE("发生异常，身份证数据上传异常")
             e.printStackTrace()
+        }
+    }
+
+    fun dealIDCardResponse(url: String, data: String) {
+        logI("返回数据 $url ：\n$data")
+        val authIDCardBean = Gson().fromJson(data, StapleAuthIDCardBean::class.java)
+        if (authIDCardBean.checkCodeErrorShow()) {
+            if (authIDCardBean.result != null)
+                riskShieldData?.idCardData(authIDCardBean.result!!)
+            else
+                showToast("身份证识别，关键数据为空，请重试..")
         }
     }
 
@@ -129,26 +159,30 @@ class AuthManagerHelper {
 
                 override fun onFailure(call: Call, e: IOException) {
                     logE("发生异常：上传活体识别数据失败 $url")
-                    showToast("网络异常，上传活体识别数据失败")
+                    sendData("", "网络异常，上传活体识别数据失败", 2)
                     e.printStackTrace()
                 }
 
                 override fun onResponse(call: Call, response: Response) {
                     val data = response.body()?.string().toString()
-                    logI("返回数据 $url ：\n$data")
-                    val authLiveBean = Gson().fromJson(data, StapleAuthLiveBean::class.java)
-                    if (authLiveBean.checkCodeErrorShow()) {
-                        if (authLiveBean.result != null && authLiveBean?.result?.approved != null) {
-                            riskShieldData?.liveData(authLiveBean.result?.approved!!)
-                        } else {
-                            showToast("活体识别，关键数据为空，请重试..")
-                        }
-                    }
+                    sendData(url, data, 1)
                 }
             })
         } catch (e: Exception) {
             logE("发生异常，活体识别数据上传异常")
             e.printStackTrace()
+        }
+    }
+
+    private fun dealLiveResponse(url: String, data: String) {
+        logI("返回数据 $url ：\n$data")
+        val authLiveBean = Gson().fromJson(data, StapleAuthLiveBean::class.java)
+        if (authLiveBean.checkCodeErrorShow()) {
+            if (authLiveBean.result != null && authLiveBean?.result?.approved != null) {
+                riskShieldData?.liveData(authLiveBean.result?.approved!!)
+            } else {
+                showToast("活体识别，关键数据为空，请重试..")
+            }
         }
     }
 

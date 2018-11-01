@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                                 }
 
                                 override fun idCardData(authIDCardBean: StapleAuthIDCardBean.ResultBean) {
-
+                                    tv_idCardScan2.text = authIDCardBean.name
                                 }
                             })
                         }

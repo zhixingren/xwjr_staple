@@ -163,7 +163,7 @@ class UpdateDialogFragmentWWXJK : DialogFragment(), StapleHttpContract {
 
             }
             downloadUrl.err() -> {
-                updateView?.tv_updateNow?.isEnabled = true
+                updateView?.tv_updateNow?.visibility = View.VISIBLE
                 updateView?.tv_updateNow?.text = "重新下载"
                 updateView?.tv_updateNow?.setOnClickListener {
                     httpPresenter?.downLoadApk(downloadUrl)

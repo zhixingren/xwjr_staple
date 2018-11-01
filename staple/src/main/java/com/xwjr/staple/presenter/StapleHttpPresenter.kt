@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.os.Message
 import com.xwjr.staple.constant.StapleConfig
 import com.xwjr.staple.constant.StapleHttpUrl
@@ -16,6 +17,45 @@ import java.io.IOException
 import java.io.InputStream
 
 class StapleHttpPresenter(private val context: Context, private val contract: StapleHttpContract) {
+
+
+    /**e
+     * handler 发送数据
+     * 0:请求成功，返回 String
+     * 其他:根据业务逻辑处理
+     *
+     */
+    private val myHandler = object : Handler() {
+        override fun handleMessage(msg: Message) {
+            when (msg.what) {
+                0 -> {
+                    contract.statusBack(msg.data.getString("url")!!, msg.data.getString("data")!!)
+                }
+                1 -> {
+                    contract.statusBack(msg.data.getString("url")!!, msg.data)
+                }
+            }
+            super.handleMessage(msg)
+        }
+    }
+
+    /**
+     * 统一的handler数据发送
+     */
+    private fun sendData(url: String, data: String) {
+        Handler(Looper.getMainLooper()).post {
+            contract.statusBack(url, data)
+        }
+    }
+
+    /**
+     * 统一的handler数据发送
+     */
+    private fun sendBundle(data: Bundle) {
+        Handler(Looper.getMainLooper()).post {
+            contract.statusBack(data.getString("url")!!, data)
+        }
+    }
 
     /**
      * 查询升级数据
@@ -33,13 +73,13 @@ class StapleHttpPresenter(private val context: Context, private val contract: St
             override fun onFailure(call: Call, e: IOException) {
                 logI("发生异常：查询升级数据失败 $url")
                 e.printStackTrace()
-                contract.statusBack(url.err(), "")
+                sendData(url.err(), "")
             }
 
             override fun onResponse(call: Call, response: Response) {
                 val data = response.body()?.string().toString()
                 logI("返回数据 $url ：\n$data")
-                contract.statusBack(url, data)
+                sendData(url, data)
             }
         })
     }
@@ -60,13 +100,13 @@ class StapleHttpPresenter(private val context: Context, private val contract: St
             override fun onFailure(call: Call, e: IOException) {
                 logI("发生异常：查询活动数据失败 $url")
                 e.printStackTrace()
-                contract.statusBack(url.err(), "")
+                sendData(url.err(), "")
             }
 
             override fun onResponse(call: Call, response: Response) {
                 val data = response.body()?.string().toString()
                 logI("返回数据 $url ：\n$data")
-                contract.statusBack(url, data)
+                sendData(url, data)
             }
         })
     }
@@ -87,34 +127,17 @@ class StapleHttpPresenter(private val context: Context, private val contract: St
             override fun onFailure(call: Call, e: IOException) {
                 logI("发生异常：查询开屏页数据失败 $url")
                 e.printStackTrace()
-                contract.statusBack(url.err(), "")
+                sendData(url.err(), "")
             }
 
             override fun onResponse(call: Call, response: Response) {
                 val data = response.body()?.string().toString()
                 logI("返回数据 $url ：\n$data")
-                contract.statusBack(url, data)
+                sendData(url, data)
             }
         })
     }
 
-    /**e
-     * 下载apk handler 发送数据
-     */
-    @SuppressLint("HandlerLeak")
-    private val myHandler = object : Handler() {
-        override fun handleMessage(msg: Message) {
-            when (msg.what) {
-                200 -> {
-                    contract.statusBack(msg.data.getString("url")!!, msg.data)
-                }
-                500 -> {
-                    contract.statusBack(msg.data.getString("url")!!.err(), -1)
-                }
-            }
-            super.handleMessage(msg)
-        }
-    }
 
     /**
      * 下载apk
@@ -129,12 +152,7 @@ class StapleHttpPresenter(private val context: Context, private val contract: St
             override fun onFailure(call: Call, e: IOException) {
                 logI("发生异常：apk下载失败 $url")
                 e.printStackTrace()
-                val message = Message()
-                val bundle = Bundle()
-                bundle.putString("url", url)
-                message.what = 500
-                message.data = bundle
-                myHandler.sendMessage(message)
+                sendData(url.err(), "")
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -163,25 +181,17 @@ class StapleHttpPresenter(private val context: Context, private val contract: St
                         val progress = (sum * 1.0f / total!! * 100).toInt()
                         // 下载中
                         logI("安装包大小：$total  当前进度：$sum  下载百分比：$progress%")
-                        val message = Message()
-                        val bundle = Bundle()
-                        bundle.putString("url", url)
-                        bundle.putInt("progress", progress)
-                        bundle.putLong("total", total)
-                        bundle.putLong("sum", sum)
-                        message.what = 200
-                        message.data = bundle
-                        myHandler.sendMessage(message)
+                        sendBundle(Bundle().apply {
+                            putString("url", url)
+                            putInt("progress", progress)
+                            putLong("total", total)
+                            putLong("sum", sum)
+                        })
                     }
                     fos.flush()
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    val message = Message()
-                    val bundle = Bundle()
-                    bundle.putString("url", url)
-                    message.what = 500
-                    message.data = bundle
-                    myHandler.sendMessage(message)
+                    sendData(url.err(), "")
                 } finally {
                     try {
                         inputStream?.close()
