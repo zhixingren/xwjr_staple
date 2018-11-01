@@ -10,18 +10,26 @@ android {
         applicationId "com.xwjr.wwxjk"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 100000
-        versionName "1.0.0"
+        versionCode 300000
+        versionName "3.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [
                 JPUSH_PKGNAME: applicationId,
                 JPUSH_APPKEY : "3eb3a934912aaaba6169f8f9", //JPush 上注册的包名对应的 Appkey.
                 JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
         ]
+        ndk {
+            abiFilters 'armeabi'
+            // 还可以添加 'armeabi','armeabi-v7a','armeabi', 'arm64-v8a','x86', 'x86_64', 'mips', 'mips64'
+        }
     }
     buildTypes {
-        release {
+        debug {
             minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

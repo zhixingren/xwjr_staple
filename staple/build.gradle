@@ -15,11 +15,11 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        ndk {
-            //选择要添加的对应 cpu 类型的 .so 库。
-            abiFilters 'armeabi', 'armeabi-v7a'
-            // 还可以添加 , 'arm64-v8a','x86', 'x86_64', 'mips', 'mips64'
-        }
+//        ndk {
+//            //选择要添加的对应 cpu 类型的 .so 库。
+//            abiFilters 'armeabi', 'armeabi-v7a'
+//            // 还可以添加 'armeabi','armeabi', 'arm64-v8a','x86', 'x86_64', 'mips', 'mips64'
+//        }
 
 
     }
