@@ -1,9 +1,7 @@
 package com.xwjr.staple.model
 
-class StapleActivityBean {
-    var success: Boolean = false
+class StapleActivityBean : StapleCGBean() {
     var data: DataBean? = null
-    var message: String? = null
 
     class DataBean {
         var title: String? = null

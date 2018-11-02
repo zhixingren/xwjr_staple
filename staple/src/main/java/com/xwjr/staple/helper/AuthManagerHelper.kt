@@ -1,10 +1,7 @@
-package com.xwjr.staple.manager
+package com.xwjr.staple.helper
 
-import android.annotation.SuppressLint
-import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.Message
 import com.google.gson.Gson
 import com.xwjr.staple.constant.StapleConfig
 import com.xwjr.staple.constant.StapleHttpUrl
@@ -32,15 +29,16 @@ class AuthManagerHelper {
     private fun sendData(url: String, data: String, code: Int) {
         Handler(Looper.getMainLooper()).post {
             when (code) {
+                -1 -> {
+                    showToast(data)
+                }
                 0 -> {
                     dealIDCardResponse(url, data)
                 }
                 1 -> {
                     dealLiveResponse(url, data)
                 }
-                2 -> {
-                    showToast(data)
-                }
+
             }
         }
     }
@@ -61,15 +59,15 @@ class AuthManagerHelper {
             logI("请求URL:$url  请求参数：{'image':$imagePath 'source':${StapleConfig.getRiskShieldSource()} 'owner':$owner}")
 
             OkHttpClient().newCall(Request.Builder()
-                    .addHeader("Authorization", "Bearer e1a385b59e064a916d0dc9c5ade676f6bda844db3e3f1b0e8f3a4decf39c1d22")
+//                    .addHeader("Authorization", "Bearer e1a385b59e064a916d0dc9c5ade676f6bda844db3e3f1b0e8f3a4decf39c1d22")
                     .url(url)
                     .post(requestBody.build())
                     .build()
             ).enqueue(object : Callback {
 
                 override fun onFailure(call: Call, e: IOException) {
-                    logE("发生异常：上传身份证识别数据失败 $url")
-                    sendData("", "网络异常，上传身份证识别数据失败", 2)
+                    logE("网络异常：上传身份证识别数据失败 $url")
+                    sendData("", "网络异常，上传身份证识别数据失败", -1)
                     e.printStackTrace()
                 }
 
@@ -84,7 +82,7 @@ class AuthManagerHelper {
         }
     }
 
-    fun dealIDCardResponse(url: String, data: String) {
+    private fun dealIDCardResponse(url: String, data: String) {
         logI("返回数据 $url ：\n$data")
         val authIDCardBean = Gson().fromJson(data, StapleAuthIDCardBean::class.java)
         if (authIDCardBean.checkCodeErrorShow()) {
@@ -140,7 +138,6 @@ class AuthManagerHelper {
                         logI("请求参数:'imageEnv':${imgMap["image_env"]}")
                     }
                 }
-
             }
 
             requestBody.addFormDataPart("source", StapleConfig.getRiskShieldSource())
@@ -151,15 +148,15 @@ class AuthManagerHelper {
 
 
             OkHttpClient().newCall(Request.Builder()
-                    .addHeader("Authorization", "Bearer e1a385b59e064a916d0dc9c5ade676f6bda844db3e3f1b0e8f3a4decf39c1d22")
+//                    .addHeader("Authorization", "Bearer e1a385b59e064a916d0dc9c5ade676f6bda844db3e3f1b0e8f3a4decf39c1d22")
                     .url(url)
                     .post(requestBody.build())
                     .build()
             ).enqueue(object : Callback {
 
                 override fun onFailure(call: Call, e: IOException) {
-                    logE("发生异常：上传活体识别数据失败 $url")
-                    sendData("", "网络异常，上传活体识别数据失败", 2)
+                    logE("网络异常：上传活体识别数据失败 $url")
+                    sendData("", "网络异常，上传活体识别数据失败", -1)
                     e.printStackTrace()
                 }
 
@@ -196,6 +193,4 @@ class AuthManagerHelper {
     fun setRiskShieldDataListener(riskShieldData: RiskShieldData) {
         this.riskShieldData = riskShieldData
     }
-
-
 }

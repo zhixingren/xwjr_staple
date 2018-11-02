@@ -1,10 +1,8 @@
 package com.xwjr.staple.model
 
-class StapleSplashBean {
+class StapleSplashBean : StapleCGBean() {
 
-    var success: Boolean = false
     var data: DataBean? = null
-    var message: String? = null
 
     class DataBean {
 

@@ -53,7 +53,27 @@ object StapleHttpUrl {
     /**
      * 上传活体识别数据
      */
-    fun upLoadLiveInfo():String{
-        return getBaseUrl()+"/riskshield/verify/faceId/MYSELF"
+    fun upLoadLiveInfo(): String {
+        return getBaseUrl() + "/riskshield/verify/faceId/MYSELF"
+    }
+
+    /**
+     * 图形验证码
+     */
+    fun captchaUrl(): String {
+        return getBaseUrl() + "/api/v2/captcha"
+    }
+
+    /**
+     * 短信验证码
+     * type:0  图形验证码鉴权
+     * type:1  jwt鉴权
+     */
+    fun smsCaptchaUrl(mobile: String, captchaToken: String, captchaAnswer: String): String {
+        return getBaseUrl() + "/api/v2/smsCaptcha?" +
+                "to=" + mobile +
+                "&captchaToken=" + captchaToken +
+                "&captchaAnswer=" + captchaAnswer +
+                "&auth=captcha"
     }
 }

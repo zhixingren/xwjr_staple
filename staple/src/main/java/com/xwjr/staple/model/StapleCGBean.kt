@@ -5,17 +5,15 @@ import com.xwjr.staple.extension.logE
 import com.xwjr.staple.extension.showToast
 import com.xwjr.staple.manager.ErrorCodeManager
 
-open class StapleBaseBean {
-    var code = ""
+open class StapleCGBean {
+    var success: Boolean = true
     var message = ""
     var error: List<ErrorBean>? = null
-
-
     var error_description: String? = null
 
     fun checkCodeErrorShow(): Boolean {
         return try {
-            if (code == "0000") {
+            if (success) {
                 true
             } else {
                 when {
@@ -40,7 +38,7 @@ open class StapleBaseBean {
 
     fun checkCode(): Boolean {
         return try {
-            code == "0000"
+            success
         } catch (e: Exception) {
             false
         }

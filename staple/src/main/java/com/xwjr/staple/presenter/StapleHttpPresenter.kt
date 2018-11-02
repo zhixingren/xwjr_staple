@@ -1,11 +1,9 @@
 package com.xwjr.staple.presenter
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.Message
 import com.xwjr.staple.constant.StapleConfig
 import com.xwjr.staple.constant.StapleHttpUrl
 import com.xwjr.staple.extension.err
@@ -17,27 +15,6 @@ import java.io.IOException
 import java.io.InputStream
 
 class StapleHttpPresenter(private val context: Context, private val contract: StapleHttpContract) {
-
-
-    /**e
-     * handler 发送数据
-     * 0:请求成功，返回 String
-     * 其他:根据业务逻辑处理
-     *
-     */
-    private val myHandler = object : Handler() {
-        override fun handleMessage(msg: Message) {
-            when (msg.what) {
-                0 -> {
-                    contract.statusBack(msg.data.getString("url")!!, msg.data.getString("data")!!)
-                }
-                1 -> {
-                    contract.statusBack(msg.data.getString("url")!!, msg.data)
-                }
-            }
-            super.handleMessage(msg)
-        }
-    }
 
     /**
      * 统一的handler数据发送

@@ -2,21 +2,28 @@ package com.xwjr.xwjrstaple.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.xwjr.staple.extension.logI
 import com.xwjr.staple.extension.showToast
+import com.xwjr.staple.jwt.JWTUtils
 import com.xwjr.staple.manager.AuthManager
-import com.xwjr.staple.manager.AuthManagerHelper
+import com.xwjr.staple.helper.AuthManagerHelper
+import com.xwjr.staple.helper.StapleHelper
 import com.xwjr.staple.model.StapleAuthIDCardBean
 import com.xwjr.xwjrstaple.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    private var stapleHelper: StapleHelper? = null
+    private var captchaToken = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        stapleHelper = StapleHelper()
 
         AuthManager.getIDCardLicense(this)
         AuthManager.getLivingLicense(this)
@@ -24,12 +31,35 @@ class MainActivity : AppCompatActivity() {
             AuthManager.openScanIdActivity(this, side = 0)
         }
         tv_idCardScan2.setOnClickListener {
-//            AuthManager.openScanIdActivity(this, side = 1)
-            showToast("aaaa+${System.currentTimeMillis()}")
+            AuthManager.openScanIdActivity(this, side = 1)
         }
         tv_liveScan.setOnClickListener {
             AuthManager.startLivingDetect(this)
         }
+        tv_jwt.setOnClickListener {
+            showToast(JWTUtils.getJWT(JWTUtils.SMS))
+        }
+        tv_captcha.setOnClickListener {
+            stapleHelper?.getCaptchaData()
+        }
+        tv_smsCaptcha.setOnClickListener {
+            stapleHelper?.sendSMSCaptcha("18810409404", captchaToken, et_captcha.text.toString())
+        }
+
+        stapleHelper?.setCaptchaListener(object : StapleHelper.CaptchaListener {
+            override fun backData(captchaToken: String, captchaBitmap: Bitmap) {
+                showToast("token:$captchaToken")
+                iv_captcha.setImageBitmap(captchaBitmap)
+                this@MainActivity.captchaToken = captchaToken
+            }
+        })
+        stapleHelper?.setSMSCaptchaListener(object : StapleHelper.SMSCaptchaListener {
+            override fun backData(smsCaptchaToken: String) {
+                showToast("token:$smsCaptchaToken")
+            }
+        })
+
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
