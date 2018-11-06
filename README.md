@@ -27,6 +27,11 @@ gradle配置
     JPushInterface.setDebugMode(true);//jpush是否是debug模式
     JPushInterface.init(this);//jpush初始化
     
+    //用户登录之后需要调用
+    StapleUserTokenManager.saveUserToken(token) //access_token
+    //用户退出登录需调用
+    StapleUserTokenManager.clearUserToken()
+    
  ### 使用
  
  1.自定义SplashActivity 继承  StapleSplashActivity，重写customDealActivityData,customDealActivityData方法会返回需要弹出的活动数据，自行处理，详见下方代码
