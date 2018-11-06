@@ -122,4 +122,24 @@ gradle配置
             e.printStackTrace()
         }
      
-      
+ 
+ 5.通用接口相关功能
+        
+        //相关工具类初始化
+        val stapleHelper = StapleHelper()
+       
+        //获取图形验证码接口
+        stapleHelper.getCaptchaData()
+        stapleHelper?.addCaptchaListener(object : StapleHelper.CaptchaListener {
+           override fun backData(captchaToken: String, captchaBitmap: Bitmap) {
+         
+           }
+        })
+        
+       //获取短信验证码接口，参数：手机号，上个接口的token,输入的图形验证码
+        stapleHelper?.sendSMSCaptcha(mobile, captchaToken,captchaAnswer)
+        stapleHelper?.addSMSCaptchaListener(object : StapleHelper.SMSCaptchaListener {
+            override fun backData(smsCaptchaToken: String) {
+            
+            }
+        })
