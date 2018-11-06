@@ -92,7 +92,7 @@ class StapleHelper {
         fun backData(captchaToken: String, captchaBitmap: Bitmap)
     }
 
-    fun setCaptchaListener(captchaListener: CaptchaListener) {
+    fun addCaptchaListener(captchaListener: CaptchaListener) {
         this.captchaListener = captchaListener
     }
 
@@ -129,7 +129,7 @@ class StapleHelper {
         fun backData(smsCaptchaToken: String)
     }
 
-    fun setSMSCaptchaListener(smsCaptchaListener: SMSCaptchaListener) {
+    fun addSMSCaptchaListener(smsCaptchaListener: SMSCaptchaListener) {
         this.smsCaptchaListener = smsCaptchaListener
     }
 

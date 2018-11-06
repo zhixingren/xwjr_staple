@@ -50,6 +50,7 @@ dependencies {
     implementation project(':bankCardLib')
     implementation project(':idCardLib')
     implementation project(':livenesslib')
+    implementation files('libs/tbs.jar')
 }
 repositories {
     mavenCentral()

@@ -45,15 +45,18 @@ class MainActivity : AppCompatActivity() {
         tv_smsCaptcha.setOnClickListener {
             stapleHelper?.sendSMSCaptcha("18810409404", captchaToken, et_captcha.text.toString())
         }
+        tv_webView.setOnClickListener {
+            startActivity(Intent(this@MainActivity, WebViewActivity::class.java))
+        }
 
-        stapleHelper?.setCaptchaListener(object : StapleHelper.CaptchaListener {
+        stapleHelper?.addCaptchaListener(object : StapleHelper.CaptchaListener {
             override fun backData(captchaToken: String, captchaBitmap: Bitmap) {
                 showToast("token:$captchaToken")
                 iv_captcha.setImageBitmap(captchaBitmap)
                 this@MainActivity.captchaToken = captchaToken
             }
         })
-        stapleHelper?.setSMSCaptchaListener(object : StapleHelper.SMSCaptchaListener {
+        stapleHelper?.addSMSCaptchaListener(object : StapleHelper.SMSCaptchaListener {
             override fun backData(smsCaptchaToken: String) {
                 showToast("token:$smsCaptchaToken")
             }

@@ -69,4 +69,13 @@
         android:text="发送短信验证码"
         app:layout_constraintTop_toBottomOf="@id/tv_captcha" />
 
+    <TextView
+        android:id="@+id/tv_webView"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="webView"
+        app:layout_constraintTop_toBottomOf="@id/tv_smsCaptcha" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
