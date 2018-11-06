@@ -60,7 +60,7 @@ class AuthManagerHelper {
             logI("请求URL:$url  请求参数：{'image':$imagePath 'source':${StapleConfig.getRiskShieldSource()} 'owner':$owner}")
 
             OkHttpClient().newCall(Request.Builder()
-                    .addHeader("Authorization", "Bearer "+StapleUserTokenManager.getUserToken())
+                    .addHeader("Cookie", "ccat="+StapleUserTokenManager.getUserToken())
                     .url(url)
                     .post(requestBody.build())
                     .build()
@@ -149,7 +149,7 @@ class AuthManagerHelper {
 
 
             OkHttpClient().newCall(Request.Builder()
-                    .addHeader("Authorization", "Bearer "+StapleUserTokenManager.getUserToken())
+                    .addHeader("Cookie", "ccat="+StapleUserTokenManager.getUserToken())
                     .url(url)
                     .post(requestBody.build())
                     .build()
