@@ -8,6 +8,7 @@ import com.xwjr.staple.constant.StapleHttpUrl
 import com.xwjr.staple.extension.logE
 import com.xwjr.staple.extension.logI
 import com.xwjr.staple.extension.showToast
+import com.xwjr.staple.manager.StapleUserTokenManager
 import com.xwjr.staple.model.StapleAuthIDCardBean
 import com.xwjr.staple.model.StapleAuthLiveBean
 import com.xwjr.staple.util.FileUtil
@@ -59,7 +60,7 @@ class AuthManagerHelper {
             logI("请求URL:$url  请求参数：{'image':$imagePath 'source':${StapleConfig.getRiskShieldSource()} 'owner':$owner}")
 
             OkHttpClient().newCall(Request.Builder()
-//                    .addHeader("Authorization", "Bearer e1a385b59e064a916d0dc9c5ade676f6bda844db3e3f1b0e8f3a4decf39c1d22")
+                    .addHeader("Authorization", "Bearer "+StapleUserTokenManager.getUserToken())
                     .url(url)
                     .post(requestBody.build())
                     .build()
@@ -148,7 +149,7 @@ class AuthManagerHelper {
 
 
             OkHttpClient().newCall(Request.Builder()
-//                    .addHeader("Authorization", "Bearer e1a385b59e064a916d0dc9c5ade676f6bda844db3e3f1b0e8f3a4decf39c1d22")
+                    .addHeader("Authorization", "Bearer "+StapleUserTokenManager.getUserToken())
                     .url(url)
                     .post(requestBody.build())
                     .build()
