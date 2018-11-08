@@ -14,9 +14,10 @@ class WebViewActivity : AppCompatActivity() {
         setContentView(R.layout.activity_webview)
 
 //        webView.loadUrl("http://debugx5.qq.com")
-        webView.loadUrl("http://p2psp.kfxfd.cn:9080/mobile/member/memberCenter")
+//        webView.loadUrl("http://p2psp.kfxfd.cn:9080/mobile/member/memberCenter")
 //        webView.loadUrl("http://www.baidu.com")
 //        webView.loadUrl("http://activity.m.duiba.com.cn/chome/index?from=login&spm=17959.1.1.1")
+        webView.loadUrl("https://wxpay.wxutil.com/mch/pay/h5.v2.php")
 
         webView.addTitleChangeListener(object : StapleWebView.TitleChangeListener {
             override fun changedTitle(title: String) {

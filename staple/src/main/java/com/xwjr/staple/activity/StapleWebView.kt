@@ -84,6 +84,10 @@ class StapleWebView : BridgeWebView {
                     val userAgent = userAgentString + " XwjrAppVersion/" + StapleUtils.getContext().getVersionName() + " DevelopPlatform/Android"
                     userAgentString = userAgent
                 }
+                StapleConfig.WWXJK->{
+                    val userAgent = userAgentString + " XwjrAppVersion/" + StapleUtils.getContext().getVersionName() + " DevelopPlatform/ReactNative"
+                    userAgentString = userAgent
+                }
             }
         }
 
