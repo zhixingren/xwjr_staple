@@ -22,8 +22,6 @@ import com.xwjr.staple.manager.StapleUserTokenManager
 import com.xwjr.staple.util.StapleUtils
 
 
-
-
 class StapleWebView : BridgeWebView {
 
     private var mContext: Context? = null
@@ -49,7 +47,7 @@ class StapleWebView : BridgeWebView {
     private fun init() {
         progressBar = ProgressBar(context, null, android.R.attr.progressBarStyleHorizontal)
         progressBar?.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 4)//设置宽高属性
-        setProgressBarColors(0xffeeeeee.toInt(),0xff659cff.toInt())
+        setProgressBarColors(0xffeeeeee.toInt(), 0xff659cff.toInt())
         addView(progressBar)
 
 
@@ -78,17 +76,9 @@ class StapleWebView : BridgeWebView {
 //            defaultFontSize = 20 //设置 WebView 字体的大小，默认大小为 16
 //            minimumFontSize = 12 //设置 WebView 支持的最小字体大小，默认为 8
 
-            //当app来源为xwjr时，增加修改userAgent
-            when (StapleConfig.appSource) {
-                StapleConfig.XWJR -> {
-                    val userAgent = userAgentString + " XwjrAppVersion/" + StapleUtils.getContext().getVersionName() + " DevelopPlatform/Android"
-                    userAgentString = userAgent
-                }
-                StapleConfig.WWXJK->{
-                    val userAgent = userAgentString + " XwjrAppVersion/" + StapleUtils.getContext().getVersionName() + " DevelopPlatform/ReactNative"
-                    userAgentString = userAgent
-                }
-            }
+            //设置userAgent
+            val userAgent = userAgentString + " DevelopPlatform/Android" + " XwjrAppVersion/" + StapleUtils.getContext().getVersionName()
+            userAgentString = userAgent
         }
 
         //设置cookie
@@ -130,7 +120,7 @@ class StapleWebView : BridgeWebView {
     private fun setCookie(cookieManager: CookieManager?) {
         try {
             for (item in StapleHttpUrl.getDomainUrl()) {
-                cookieManager?.setCookie(item, "device=android")
+//                cookieManager?.setCookie(item, "device=android")
                 cookieManager?.setCookie(item, "ccat=" + StapleUserTokenManager.getUserToken())
             }
             CookieSyncManager.getInstance().sync()
