@@ -18,6 +18,17 @@ object StapleHttpUrl {
     }
 
     /**
+     * 获取webview需要配置域名list
+     */
+    fun getDomainUrl():List<String> {
+        return if (StapleConfig.isDebug){
+            arrayListOf("http://p2psp.kfxfd.cn:9080","http://p2p.slowlytime.com:9084")
+        }else{
+            arrayListOf("https://www.xwjr.com","http://xiaodai.xwjr.com")
+        }
+    }
+
+    /**
      * 版本升级
      */
     fun updateInfoUrl(context: Context): String {

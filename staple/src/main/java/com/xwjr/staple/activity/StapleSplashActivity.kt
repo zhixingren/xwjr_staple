@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.google.gson.Gson
+import com.tencent.smtt.sdk.QbSdk
 import com.xwjr.staple.R
 
 import com.xwjr.staple.constant.StapleConfig
@@ -50,11 +51,27 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
     private fun init() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         setStatusBar()
+        initX5Core()
         dealPermission()
         logI("是否开启了通知权限：" + isNotificationEnabled())
         queryUpdateInfo()
         querySplashInfo()
         setWindowBackground()
+    }
+
+    /**
+     * 初始化X5内核
+     */
+    private fun initX5Core() {
+        QbSdk.setDownloadWithoutWifi(true)
+        QbSdk.initX5Environment(this, object : QbSdk.PreInitCallback {
+            override fun onCoreInitFinished() {
+            }
+
+            override fun onViewInitFinished(b: Boolean) {
+                logI("onViewInitFinished,X5内核初始化完成：$b")
+            }
+        })
     }
 
     /**
@@ -288,7 +305,7 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
                             show(supportFragmentManager)
                         }
             }
-            StapleConfig.WWXJK->{
+            StapleConfig.WWXJK -> {
                 //强制升级
                 UpdateDialogFragmentWWXJK
                         .newInstance(updateData.forceUpdate, updateData.downloadUrl!!, "V" + updateData.version!!, updateData.changeLog!!).apply {
