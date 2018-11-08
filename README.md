@@ -127,4 +127,42 @@ gradle配置
             e.printStackTrace()
         }
      
-      
+  5.webView相关
+        
+        StapleWebView
+        
+        //xml
+        <com.xwjr.staple.activity.StapleWebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+       
+        //url访问地址
+        webView.loadUrl(url)
+        
+        //监听标题变化
+         webView.addTitleChangeListener(object : StapleWebView.TitleChangeListener {
+            override fun changedTitle(title: String) {
+                tv_title.text = title
+            }
+        })
+        
+        //监听js调用原生的接口
+         webView.registerHandler("BidListPage") { data, _ ->
+            logI("webViewHandler $data ")
+        }
+        
+        //设置进度条颜色
+         webView.setProgressBarColors(0xffff0000.toInt(),0xff00ff00.toInt())
+         
+         //监听返回键处理
+         
+         webView.onBackListener()
+         //example
+         override fun onBackPressed() {
+             if (webView.onBackListener()) {
+                return
+                }
+               super.onBackPressed()
+         }   
+        
