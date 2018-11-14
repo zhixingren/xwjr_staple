@@ -26,11 +26,8 @@ gradle配置
     StapleConfig.INSTANCE.setDebug(true);//是否是debug模式
     JPushInterface.setDebugMode(true);//jpush是否是debug模式
     JPushInterface.init(this);//jpush初始化
+    CrashHandlerManager.getInstance().init(getApplicationContext());//崩溃处理
     
-    //用户登录之后需要调用
-    StapleUserTokenManager.saveUserToken(token) //access_token
-    //用户退出登录需调用
-    StapleUserTokenManager.clearUserToken()
     
  ### 使用
  
@@ -166,3 +163,9 @@ gradle配置
                super.onBackPressed()
          }   
         
+### 注意事项
+    
+    1.用户登录之后需要调用
+    StapleUserTokenManager.saveUserToken(token) //access_token
+    2.用户退出登录需调用
+    StapleUserTokenManager.clearUserToken()
