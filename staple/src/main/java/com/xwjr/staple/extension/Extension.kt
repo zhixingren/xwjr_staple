@@ -4,6 +4,7 @@ import android.util.Log
 import com.xwjr.staple.constant.StapleConfig
 import com.xwjr.staple.util.ToastUtils
 import com.xwjr.staple.util.StapleUtils
+import java.io.File
 import java.util.*
 
 private const val TAG = "xwjrStaple"
@@ -86,5 +87,80 @@ fun Any?.laterDeal(time: Long = 3000, deal: (() -> Unit)? = null) {
         e.printStackTrace()
         logE("倒计时发生异常")
     }
+}
 
+/**
+ * 创建文件并赋予 777 权限
+ */
+fun Any?.newFile(filePath: String): File? {
+    try {
+        val file = File(filePath)
+        if (file.exists()) {
+            file.delete()
+        }
+        file.createNewFile()
+        try {
+            //给各个目录授予权限
+            val filePaths = file.path.split("/")
+            val sb = StringBuilder()
+            for (i in filePaths.indices) {
+                sb.append(filePaths[i])
+                if (i < filePaths.size - 1) {
+                    sb.append("/")
+                }
+                val cmd = arrayOf("chmod", "777", sb.toString())
+                val processBuilder = ProcessBuilder(*cmd)
+                try {
+                    processBuilder.start()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    logE("文件授权chmod异常->filePath:$filePath")
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            logE("文件授权chmod异常->filePath:$filePath")
+        }
+        return file
+    } catch (e: Exception) {
+        e.printStackTrace()
+        logE("创建文件异常->filePath:$filePath")
+        return null
+    }
+}
+
+/**
+ * 获取文件并赋予 777 权限
+ */
+fun Any?.getFile(filePath: String): File? {
+    try {
+        val file = File(filePath)
+        try {
+            //给各个目录授予权限
+            val filePaths = file.path.split("/")
+            val sb = StringBuilder()
+            for (i in filePaths.indices) {
+                sb.append(filePaths[i])
+                if (i < filePaths.size - 1) {
+                    sb.append("/")
+                }
+                val cmd = arrayOf("chmod", "777", sb.toString())
+                val processBuilder = ProcessBuilder(*cmd)
+                try {
+                    processBuilder.start()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    logE("文件授权chmod异常->filePath:$filePath")
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            logE("文件授权chmod异常->filePath:$filePath")
+        }
+        return file
+    } catch (e: Exception) {
+        e.printStackTrace()
+        logE("获取文件异常->filePath:$filePath")
+        return null
+    }
 }

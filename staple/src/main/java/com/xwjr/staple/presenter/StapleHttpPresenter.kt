@@ -8,6 +8,7 @@ import com.xwjr.staple.constant.StapleConfig
 import com.xwjr.staple.constant.StapleHttpUrl
 import com.xwjr.staple.extension.err
 import com.xwjr.staple.extension.logI
+import com.xwjr.staple.extension.newFile
 import okhttp3.*
 import java.io.File
 import java.io.FileOutputStream
@@ -140,12 +141,7 @@ class StapleHttpPresenter(private val context: Context, private val contract: St
                 try {
                     inputStream = response.body()?.byteStream()
                     val total = response.body()?.contentLength()
-                    val file = File(StapleConfig.getAppFilePath() + "/" + StapleConfig.getAppFileName())
-                    if (file.exists()) {
-                        file.delete()
-                    }
-                    file.createNewFile()
-
+                    val file = newFile(StapleConfig.getAppFilePath() + "/" + StapleConfig.getAppFileName())
                     fos = FileOutputStream(file)
                     var sum: Long = 0
                     while (true) {
@@ -208,11 +204,7 @@ class StapleHttpPresenter(private val context: Context, private val contract: St
                 try {
                     inputStream = response.body()?.byteStream()
                     val total = response.body()?.contentLength()
-                    val file = File(StapleConfig.getImgFilePath() + "/" + StapleConfig.getSplashFileName())
-                    if (file.exists()) {
-                        file.delete()
-                    }
-                    file.createNewFile()
+                    val file = newFile(StapleConfig.getImgFilePath() + "/" + StapleConfig.getSplashFileName())
                     fos = FileOutputStream(file)
                     var sum: Long = 0
                     while (true) {

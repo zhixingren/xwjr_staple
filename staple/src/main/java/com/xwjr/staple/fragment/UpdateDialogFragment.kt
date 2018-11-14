@@ -15,7 +15,9 @@ import com.xwjr.staple.R
 import com.xwjr.staple.constant.StapleConfig
 import com.xwjr.staple.manager.MyFileProvider
 import com.xwjr.staple.extension.err
+import com.xwjr.staple.extension.getFile
 import com.xwjr.staple.extension.logI
+import com.xwjr.staple.extension.showToast
 import com.xwjr.staple.presenter.StapleHttpContract
 import com.xwjr.staple.presenter.StapleHttpPresenter
 import kotlinx.android.synthetic.main.staple_update_hint.view.*
@@ -142,14 +144,18 @@ class UpdateDialogFragment : DialogFragment(), StapleHttpContract {
      */
     private fun install() {
         try {
-            val file = File(StapleConfig.getAppFilePath(), StapleConfig.getAppFileName())
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            MyFileProvider.setIntentDataAndType(context!!, intent, "application/vnd.android.package-archive", file, true)
-            context?.startActivity(intent)
+            val file = getFile(StapleConfig.getAppFilePath() + "/" + StapleConfig.getAppFileName())
+            if (file != null) {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                MyFileProvider.setIntentDataAndType(context!!, intent, "application/vnd.android.package-archive", file, true)
+                context?.startActivity(intent)
+            } else {
+                showToast("未获取到安装文件")
+            }
         } catch (e: Exception) {
             e.printStackTrace()
-            Toast.makeText(context, StapleConfig.getAppInstallFailHint(), Toast.LENGTH_SHORT).show()
+            showToast(StapleConfig.getAppInstallFailHint())
         }
 
     }

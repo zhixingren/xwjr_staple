@@ -9,7 +9,7 @@ object StapleSplashBeanManager {
     private const val IMG_URL = "SPLASH_IMG_URL"
 
     /**
-     * 保存最新的活动信息
+     * 保存最新的开屏信息
      */
     @SuppressLint("ApplySharedPref")
     @Suppress("DEPRECATION")
@@ -26,7 +26,14 @@ object StapleSplashBeanManager {
     }
 
     /**
-     * 获取本地存储的活动信息
+     * 保存最新的开屏信息
+     */
+    fun clearSplashInfo(context: Context) {
+        saveSplashInfo(context, "")
+    }
+
+    /**
+     * 获取本地存储的开屏信息
      */
     private fun getSplashInfo(context: Context): String? {
         return try {

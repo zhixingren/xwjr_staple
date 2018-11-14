@@ -12,6 +12,7 @@ import com.xwjr.staple.R
 import com.xwjr.staple.constant.StapleConfig
 import com.xwjr.staple.constant.StapleHttpUrl
 import com.xwjr.staple.extension.*
+import com.xwjr.staple.fragment.UpdateDialogFragment
 import com.xwjr.staple.fragment.UpdateDialogFragmentWWXHB
 import com.xwjr.staple.fragment.UpdateDialogFragmentWWXJK
 import com.xwjr.staple.manager.StapleActivityBeanManager
@@ -131,6 +132,7 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
     @Suppress("DEPRECATION")
     private fun setDefaultWindowBackground() {
         try {
+            StapleSplashBeanManager.clearSplashInfo(this)
             StapleConfig.dealAppSource(
                     wwxhb = {
                         setWindowBG(resId = R.mipmap.staple_wwxhb_window_bg)
@@ -274,7 +276,7 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
      */
     private fun deleteSplashImg() {
         try {
-            val file = File(StapleConfig.getImgFilePath(), StapleConfig.getSplashFileName())
+            val file = File(StapleConfig.getImgFilePath() + "/" + StapleConfig.getSplashFileName())
             if (file.exists()) {
                 file.delete()
                 logI("已删除本地开屏图")
@@ -293,7 +295,6 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
         logI("是否强制升级：${updateData.forceUpdate}")
         when (StapleConfig.appSource) {
             StapleConfig.WWXHB -> {
-                //强制升级
                 UpdateDialogFragmentWWXHB
                         .newInstance(updateData.forceUpdate, updateData.downloadUrl!!, "V" + updateData.version!!, updateData.changeLog!!).apply {
                             setCancelUpdateListener(object : UpdateDialogFragmentWWXHB.CancelUpdate {
@@ -306,10 +307,21 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
                         }
             }
             StapleConfig.WWXJK -> {
-                //强制升级
                 UpdateDialogFragmentWWXJK
                         .newInstance(updateData.forceUpdate, updateData.downloadUrl!!, "V" + updateData.version!!, updateData.changeLog!!).apply {
                             setCancelUpdateListener(object : UpdateDialogFragmentWWXJK.CancelUpdate {
+                                override fun cancel() {
+                                    logI("稍后升级")
+                                    queryActivityInfo()
+                                }
+                            })
+                            show(supportFragmentManager)
+                        }
+            }
+            else -> {
+                UpdateDialogFragment
+                        .newInstance(updateData.forceUpdate, updateData.downloadUrl!!, "V" + updateData.version!!, updateData.changeLog!!).apply {
+                            setCancelUpdateListener(object : UpdateDialogFragment.CancelUpdate {
                                 override fun cancel() {
                                     logI("稍后升级")
                                     queryActivityInfo()

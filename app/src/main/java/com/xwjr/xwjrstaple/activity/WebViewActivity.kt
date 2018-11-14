@@ -14,11 +14,11 @@ class WebViewActivity : AppCompatActivity() {
         setContentView(R.layout.activity_webview)
 
 //        webView.loadUrl("http://debugx5.qq.com")
-//        webView.loadUrl("http://p2psp.kfxfd.cn:9080/mobile/more")
+        webView.loadUrl("http://p2psp.kfxfd.cn:9080/mobile/more")
 //        webView.loadUrl("http://www.baidu.com")
 //        webView.loadUrl("http://activity.m.duiba.com.cn/chome/index?from=login&spm=17959.1.1.1")
 //        webView.loadUrl("https://wxpay.wxutil.com/mch/pay/h5.v2.php")
-        webView.loadUrl("http://10.99.97.29:18080/returnResults?message=%25E5%25BC%2580%25E6%2588%25B7%25E6%2588%2590%25E5%258A%259F&status=true&optype=%25E5%25BC%2580%25E6%2588%25B7")
+//        webView.loadUrl("http://10.99.97.29:18080/returnResults?message=%25E5%25BC%2580%25E6%2588%25B7%25E6%2588%2590%25E5%258A%259F&status=true&optype=%25E5%25BC%2580%25E6%2588%25B7")
         webView.addTitleChangeListener(object : StapleWebView.TitleChangeListener {
             override fun changedTitle(title: String) {
                 tv_title.text = title
