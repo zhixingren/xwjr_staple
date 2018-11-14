@@ -19,7 +19,7 @@ public class MyApplication extends Application {
         super.onCreate();
         StapleUtils.init(this);
 
-        StapleConfig.INSTANCE.setAppSource(StapleConfig.APPHUB);
+        StapleConfig.INSTANCE.setAppSource(StapleConfig.WWXJK);
         StapleConfig.INSTANCE.setDebug(true);
 
         StapleUserTokenManager.INSTANCE.saveUserToken("831b3a594d3c4611240b704a288712d79b24229dcb547445bfda968cbfb71074");

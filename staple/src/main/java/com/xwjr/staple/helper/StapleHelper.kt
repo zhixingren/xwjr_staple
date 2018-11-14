@@ -3,23 +3,25 @@ package com.xwjr.staple.helper
 import android.graphics.Bitmap
 import android.os.Handler
 import android.os.Looper
+import android.support.v7.app.AppCompatActivity
 import com.google.gson.Gson
 import com.xwjr.staple.constant.StapleHttpUrl
 import com.xwjr.staple.extension.base64ToBitmap
 import com.xwjr.staple.extension.logI
 import com.xwjr.staple.extension.showToast
+import com.xwjr.staple.fragment.ProgressDialogFragment
 import com.xwjr.staple.model.StapleCaptchaBean
 import com.xwjr.staple.model.StapleSMSCaptchaBean
 import okhttp3.*
 import java.io.IOException
-import java.lang.Exception
 
 
 /**
  * 身份证识别，活体检测功能
  */
-class StapleHelper {
+class StapleHelper(private val activity: AppCompatActivity) {
 
+    private var dialog: ProgressDialogFragment? = null
 
     /**
      * 统一的handler数据发送
@@ -63,27 +65,34 @@ class StapleHelper {
      * 查询图形验证码数据
      */
     fun getCaptchaData() {
-        logI("开始获取图形验证码数据...")
-        val url = StapleHttpUrl.captchaUrl()
-        logI("请求URL:$url")
-        OkHttpClient().newCall(Request.Builder()
-                .url(url)
-                .get()
-                .build()
-        ).enqueue(object : Callback {
+        try {
+            logI("开始获取图形验证码数据...")
+            val url = StapleHttpUrl.captchaUrl()
+            logI("请求URL:$url")
+            OkHttpClient().newCall(Request.Builder()
+                    .url(url)
+                    .get()
+                    .build()
+            ).enqueue(object : Callback {
 
-            override fun onFailure(call: Call, e: IOException) {
-                logI("网络异常：获取图形验证码数据失败 $url")
-                e.printStackTrace()
-                sendData("网络异常：获取图形验证码数据失败", -1)
-            }
+                override fun onFailure(call: Call, e: IOException) {
+                    logI("网络异常：获取图形验证码数据失败 $url")
+                    e.printStackTrace()
+                    sendData("网络异常：获取图形验证码数据失败", -1)
+                }
 
-            override fun onResponse(call: Call, response: Response) {
-                val data = response.body()?.string().toString()
-                logI("返回数据 $url ：\n$data")
-                sendData(data, 0)
-            }
-        })
+                override fun onResponse(call: Call, response: Response) {
+                    val data = response.body()?.string().toString()
+                    logI("返回数据 $url ：\n$data")
+                    sendData(data, 0)
+                }
+            })
+        } catch (e: Exception) {
+            logI("数据异常：获取图形验证码数据失败")
+            sendData("数据异常：获取图形验证码数据失败", -1)
+            e.printStackTrace()
+        }
+
     }
 
     private var captchaListener: CaptchaListener? = null
@@ -100,27 +109,39 @@ class StapleHelper {
      * 发送短信验证码
      */
     fun sendSMSCaptcha(mobile: String, captchaToken: String, captchaAnswer: String) {
-        logI("开始获取短信验证码数据...")
-        val url = StapleHttpUrl.smsCaptchaUrl(mobile, captchaToken, captchaAnswer)
-        logI("请求URL:$url")
-        OkHttpClient().newCall(Request.Builder()
-                .url(url)
-                .get()
-                .build()
-        ).enqueue(object : Callback {
+        try {
+            dialog = ProgressDialogFragment.newInstance(hint = "发送中...")
+            dialog?.show(activity.supportFragmentManager)
+            logI("开始获取短信验证码数据...")
+            val url = StapleHttpUrl.smsCaptchaUrl(mobile, captchaToken, captchaAnswer)
+            logI("请求URL:$url")
+            OkHttpClient().newCall(Request.Builder()
+                    .url(url)
+                    .get()
+                    .build()
+            ).enqueue(object : Callback {
 
-            override fun onFailure(call: Call, e: IOException) {
-                logI("网络异常：获取短信验证码数据失败 $url")
-                e.printStackTrace()
-                sendData("网络异常：获取短信验证码数据失败", -1)
-            }
+                override fun onFailure(call: Call, e: IOException) {
+                    dialog?.dismiss()
+                    logI("网络异常：获取短信验证码数据失败 $url")
+                    e.printStackTrace()
+                    sendData("网络异常：获取短信验证码数据失败", -1)
+                }
 
-            override fun onResponse(call: Call, response: Response) {
-                val data = response.body()?.string().toString()
-                logI("返回数据 $url ：\n$data")
-                sendData(data, 1)
-            }
-        })
+                override fun onResponse(call: Call, response: Response) {
+                    dialog?.dismiss()
+                    val data = response.body()?.string().toString()
+                    logI("返回数据 $url ：\n$data")
+                    sendData(data, 1)
+                }
+            })
+        } catch (e: Exception) {
+            logI("数据异常：获取短信验证码数据失败")
+            sendData("数据异常：获取短信验证码数据失败", -1)
+            e.printStackTrace()
+            dialog?.dismiss()
+        }
+
     }
 
     private var smsCaptchaListener: SMSCaptchaListener? = null

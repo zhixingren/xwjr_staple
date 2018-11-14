@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import com.github.lzyzsd.jsbridge.BridgeWebView
 import com.tencent.smtt.sdk.*
-import com.xwjr.staple.constant.StapleConfig
 import com.xwjr.staple.constant.StapleHttpUrl
 import com.xwjr.staple.extension.getVersionName
 import com.xwjr.staple.extension.isNotNullOrEmpty

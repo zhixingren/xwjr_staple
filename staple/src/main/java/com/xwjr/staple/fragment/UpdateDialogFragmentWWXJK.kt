@@ -133,7 +133,7 @@ class UpdateDialogFragmentWWXJK : DialogFragment(), StapleHttpContract {
     }
 
     fun show(fragmentManager: FragmentManager) {
-        show(fragmentManager, "UpdateViewDialog")
+        show(fragmentManager, "UpdateDialogFragmentWWXJK")
     }
 
 

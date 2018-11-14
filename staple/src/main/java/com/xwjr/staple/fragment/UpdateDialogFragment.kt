@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentManager
 import android.text.Html
 import android.view.KeyEvent
 import android.view.View
-import android.widget.Toast
 import com.xwjr.staple.R
 import com.xwjr.staple.constant.StapleConfig
 import com.xwjr.staple.manager.MyFileProvider
@@ -21,7 +20,6 @@ import com.xwjr.staple.extension.showToast
 import com.xwjr.staple.presenter.StapleHttpContract
 import com.xwjr.staple.presenter.StapleHttpPresenter
 import kotlinx.android.synthetic.main.staple_update_hint.view.*
-import java.io.File
 
 class UpdateDialogFragment : DialogFragment(), StapleHttpContract {
 
@@ -105,7 +103,7 @@ class UpdateDialogFragment : DialogFragment(), StapleHttpContract {
     }
 
     fun show(fragmentManager: FragmentManager) {
-        show(fragmentManager, "UpdateViewDialog")
+        show(fragmentManager, "UpdateDialogFragment")
     }
 
 

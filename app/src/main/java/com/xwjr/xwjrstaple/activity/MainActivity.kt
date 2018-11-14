@@ -5,8 +5,10 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.xwjr.staple.extension.laterDeal
 import com.xwjr.staple.extension.logI
 import com.xwjr.staple.extension.showToast
+import com.xwjr.staple.fragment.ProgressDialogFragment
 import com.xwjr.staple.jwt.JWTUtils
 import com.xwjr.staple.manager.AuthManager
 import com.xwjr.staple.helper.AuthManagerHelper
@@ -23,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        stapleHelper = StapleHelper()
+        stapleHelper = StapleHelper(this)
 
         AuthManager.getIDCardLicense(this)
         AuthManager.getLivingLicense(this)
@@ -47,6 +49,14 @@ class MainActivity : AppCompatActivity() {
         }
         tv_webView.setOnClickListener {
             startActivity(Intent(this@MainActivity, WebViewActivity::class.java))
+        }
+
+        tv_progress.setOnClickListener {
+            val progress = ProgressDialogFragment.newInstance(hint = "哈哈哈///")
+            progress.show(supportFragmentManager)
+            laterDeal {
+                progress.dismiss()
+            }
         }
 
         stapleHelper?.addCaptchaListener(object : StapleHelper.CaptchaListener {
@@ -73,7 +83,7 @@ class MainActivity : AppCompatActivity() {
                     AuthManager.PAGE_INTO_IDCARDSCAN -> {
                         AuthManager.dealIDCardScan(data!!) { filePath ->
                             logI(filePath)
-                            val authManagerHelper = AuthManagerHelper()
+                            val authManagerHelper = AuthManagerHelper(this)
                             authManagerHelper.upLoadIDCardInfo(filePath)
                             authManagerHelper.setRiskShieldDataListener(object : AuthManagerHelper.RiskShieldData {
                                 override fun liveData(isApproved: Boolean) {
@@ -89,7 +99,7 @@ class MainActivity : AppCompatActivity() {
 
                     AuthManager.PAGE_INTO_LIVENESS -> {
                         AuthManager.dealLivingData(this, data!!) { imagesMap, _, delta ->
-                            val authManagerHelper = AuthManagerHelper()
+                            val authManagerHelper = AuthManagerHelper(this)
                             authManagerHelper.upLoadLiveData("朱小航", "412326199211116919", delta, imagesMap)
                             authManagerHelper.setRiskShieldDataListener(object : AuthManagerHelper.RiskShieldData {
                                 override fun liveData(isApproved: Boolean) {

@@ -1,13 +1,16 @@
 package com.xwjr.staple.helper
 
+import android.app.Activity
 import android.os.Handler
 import android.os.Looper
+import android.support.v7.app.AppCompatActivity
 import com.google.gson.Gson
 import com.xwjr.staple.constant.StapleConfig
 import com.xwjr.staple.constant.StapleHttpUrl
 import com.xwjr.staple.extension.logE
 import com.xwjr.staple.extension.logI
 import com.xwjr.staple.extension.showToast
+import com.xwjr.staple.fragment.ProgressDialogFragment
 import com.xwjr.staple.manager.StapleUserTokenManager
 import com.xwjr.staple.model.StapleAuthIDCardBean
 import com.xwjr.staple.model.StapleAuthLiveBean
@@ -21,8 +24,8 @@ import okhttp3.RequestBody
 /**
  * 身份证识别，活体检测功能
  */
-class AuthManagerHelper {
-
+class AuthManagerHelper(private val activity: AppCompatActivity) {
+    private var dialog: ProgressDialogFragment? = null
 
     /**
      * 统一的handler数据发送
@@ -47,6 +50,8 @@ class AuthManagerHelper {
 
     fun upLoadIDCardInfo(imagePath: String, owner: String = "0") {
         try {
+            dialog = ProgressDialogFragment.newInstance(hint = "身份证数据识别中...")
+            dialog?.show(activity.supportFragmentManager)
             logI("开始上传身份证识别数据...")
             val url = StapleHttpUrl.upLoadIDCardInfo()
 
@@ -60,24 +65,27 @@ class AuthManagerHelper {
             logI("请求URL:$url  请求参数：{'image':$imagePath 'source':${StapleConfig.getRiskShieldSource()} 'owner':$owner}")
 
             OkHttpClient().newCall(Request.Builder()
-                    .addHeader("Cookie", "ccat="+StapleUserTokenManager.getUserToken())
+                    .addHeader("Cookie", "ccat=" + StapleUserTokenManager.getUserToken())
                     .url(url)
                     .post(requestBody.build())
                     .build()
             ).enqueue(object : Callback {
 
                 override fun onFailure(call: Call, e: IOException) {
+                    dialog?.dismiss()
                     logE("网络异常：上传身份证识别数据失败 $url")
                     sendData("", "网络异常，上传身份证识别数据失败", -1)
                     e.printStackTrace()
                 }
 
                 override fun onResponse(call: Call, response: Response) {
+                    dialog?.dismiss()
                     val data = response.body()?.string().toString()
                     sendData(url, data, 0)
                 }
             })
         } catch (e: Exception) {
+            dialog?.dismiss()
             logE("发生异常，身份证数据上传异常")
             e.printStackTrace()
         }
@@ -96,6 +104,8 @@ class AuthManagerHelper {
 
     fun upLoadLiveData(name: String, idNumber: String, delta: String, imgMap: MutableMap<String, String>) {
         try {
+            dialog = ProgressDialogFragment.newInstance(hint = "正在识别...")
+            dialog?.show(activity.supportFragmentManager)
             logI("开始上传活体识别数据...")
             val url = StapleHttpUrl.upLoadLiveInfo()
             logI("请求URL:$url")
@@ -149,24 +159,27 @@ class AuthManagerHelper {
 
 
             OkHttpClient().newCall(Request.Builder()
-                    .addHeader("Cookie", "ccat="+StapleUserTokenManager.getUserToken())
+                    .addHeader("Cookie", "ccat=" + StapleUserTokenManager.getUserToken())
                     .url(url)
                     .post(requestBody.build())
                     .build()
             ).enqueue(object : Callback {
 
                 override fun onFailure(call: Call, e: IOException) {
+                    dialog?.dismiss()
                     logE("网络异常：上传活体识别数据失败 $url")
                     sendData("", "网络异常，上传活体识别数据失败", -1)
                     e.printStackTrace()
                 }
 
                 override fun onResponse(call: Call, response: Response) {
+                    dialog?.dismiss()
                     val data = response.body()?.string().toString()
                     sendData(url, data, 1)
                 }
             })
         } catch (e: Exception) {
+            dialog?.dismiss()
             logE("发生异常，活体识别数据上传异常")
             e.printStackTrace()
         }
@@ -193,5 +206,9 @@ class AuthManagerHelper {
 
     fun setRiskShieldDataListener(riskShieldData: RiskShieldData) {
         this.riskShieldData = riskShieldData
+    }
+
+    init {
+        dialog = ProgressDialogFragment.newInstance()
     }
 }

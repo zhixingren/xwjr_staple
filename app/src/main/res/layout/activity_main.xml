@@ -77,5 +77,13 @@
         android:text="webView"
         app:layout_constraintTop_toBottomOf="@id/tv_smsCaptcha" />
 
+    <TextView
+        android:id="@+id/tv_progress"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="弹出进度条"
+        app:layout_constraintTop_toBottomOf="@id/tv_webView" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

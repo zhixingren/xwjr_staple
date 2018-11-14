@@ -15,7 +15,6 @@ import android.util.DisplayMetrics
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.xwjr.staple.R
 import com.xwjr.staple.constant.StapleConfig
 import com.xwjr.staple.manager.MyFileProvider
@@ -139,7 +138,7 @@ class UpdateDialogFragmentWWXHB : DialogFragment(), StapleHttpContract {
     }
 
     fun show(fragmentManager: FragmentManager) {
-        show(fragmentManager, "UpdateViewDialog")
+        show(fragmentManager, "UpdateDialogFragmentWWXHB")
     }
 
 
