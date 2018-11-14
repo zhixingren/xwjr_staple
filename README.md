@@ -85,8 +85,8 @@ gradle配置
         AuthManager.getIDCardLicense(this)
         AuthManager.getLivingLicense(this)
         
-        //初始化authManagerHelper
-         val authManagerHelper = AuthManagerHelper()
+        //初始化authManagerHelper 
+         val authManagerHelper = AuthManagerHelper(activity)
          authManagerHelper.setRiskShieldDataListener(object : AuthManagerHelper.RiskShieldData {
                                 override fun liveData(isApproved: Boolean) {
                                     //处理活体数据
@@ -162,6 +162,27 @@ gradle配置
                 }
                super.onBackPressed()
          }   
+         
+   6.其他网络请求
+   
+       //初始化stapleHttpHelper
+       var stapleHttpHelper = StapleHttpHelper(this)
+       
+       //获取图形验证码 以及 监听事件
+       stapleHelper?.getCaptchaData()
+       stapleHelper?.addCaptchaListener(object : StapleHttpHelper.CaptchaListener {
+            override fun backData(captchaToken: String, captchaBitmap: Bitmap) {
+            }
+        })
+        
+       //发送短信验证码 以及 监听事件
+       stapleHelper?.sendSMSCaptcha("18810409404", captchaToken, et_captcha.text.toString())
+       stapleHelper?.addSMSCaptchaListener(object : StapleHttpHelper.SMSCaptchaListener {
+            override fun backData(smsCaptchaToken: String) {
+                showToast("token:$smsCaptchaToken")
+            }
+        })
+
         
 ### 注意事项
     
