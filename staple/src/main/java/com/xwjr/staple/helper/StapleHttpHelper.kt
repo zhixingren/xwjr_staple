@@ -19,7 +19,7 @@ import java.io.IOException
 /**
  * 身份证识别，活体检测功能
  */
-class StapleHelper(private val activity: AppCompatActivity) {
+class StapleHttpHelper(private val activity: AppCompatActivity) {
 
     private var dialog: ProgressDialogFragment? = null
 

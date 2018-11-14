@@ -12,20 +12,23 @@ import com.xwjr.staple.fragment.ProgressDialogFragment
 import com.xwjr.staple.jwt.JWTUtils
 import com.xwjr.staple.manager.AuthManager
 import com.xwjr.staple.helper.AuthManagerHelper
-import com.xwjr.staple.helper.StapleHelper
+import com.xwjr.staple.helper.StapleHttpHelper
 import com.xwjr.staple.model.StapleAuthIDCardBean
 import com.xwjr.xwjrstaple.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private var stapleHelper: StapleHelper? = null
+    private var stapleHelper: StapleHttpHelper? = null
     private var captchaToken = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        stapleHelper = StapleHelper(this)
+
+        logI("scheme:" +intent.scheme)
+
+        stapleHelper = StapleHttpHelper(this)
 
         AuthManager.getIDCardLicense(this)
         AuthManager.getLivingLicense(this)
@@ -59,14 +62,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        stapleHelper?.addCaptchaListener(object : StapleHelper.CaptchaListener {
+        stapleHelper?.addCaptchaListener(object : StapleHttpHelper.CaptchaListener {
             override fun backData(captchaToken: String, captchaBitmap: Bitmap) {
                 showToast("token:$captchaToken")
                 iv_captcha.setImageBitmap(captchaBitmap)
                 this@MainActivity.captchaToken = captchaToken
             }
         })
-        stapleHelper?.addSMSCaptchaListener(object : StapleHelper.SMSCaptchaListener {
+        stapleHelper?.addSMSCaptchaListener(object : StapleHttpHelper.SMSCaptchaListener {
             override fun backData(smsCaptchaToken: String) {
                 showToast("token:$smsCaptchaToken")
             }
