@@ -55,6 +55,13 @@ object StapleHttpUrl {
     }
 
     /**
+     * 风控中心身份识别状态
+     */
+    fun queryRiskShieldStep():String{
+        return getBaseUrl() + "/riskshield/verify/steps/MYSELF/" +StapleConfig.getRiskShieldSource()
+    }
+
+    /**
      * 上传身份证识别数据
      */
     fun upLoadIDCardInfo(): String {
@@ -71,7 +78,7 @@ object StapleHttpUrl {
     /**
      * 图形验证码
      */
-    fun captchaUrl(): String {
+    fun getCaptchaUrl(): String {
         return getBaseUrl() + "/api/v2/captcha"
     }
 
@@ -80,7 +87,7 @@ object StapleHttpUrl {
      * type:0  图形验证码鉴权
      * type:1  jwt鉴权
      */
-    fun smsCaptchaUrl(mobile: String, captchaToken: String, captchaAnswer: String): String {
+    fun getSmsCaptchaUrl(mobile: String, captchaToken: String, captchaAnswer: String): String {
         return getBaseUrl() + "/api/v2/smsCaptcha?" +
                 "to=" + mobile +
                 "&captchaToken=" + captchaToken +

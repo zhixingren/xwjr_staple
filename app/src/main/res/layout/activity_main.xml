@@ -7,11 +7,19 @@
     tools:context=".activity.MainActivity">
 
     <TextView
+        android:id="@+id/tv_queryRiskShieldData"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="查询风控中心数据!" />
+
+    <TextView
         android:id="@+id/tv_idCardScan"
         android:layout_width="200dp"
         android:layout_height="40dp"
         android:gravity="center"
-        android:text="身份证扫描正面!" />
+        android:text="身份证扫描正面!"
+        app:layout_constraintTop_toBottomOf="@id/tv_queryRiskShieldData" />
 
     <TextView
         android:id="@+id/tv_idCardScan2"

@@ -70,7 +70,8 @@ fun Context.isNotificationEnabled(): Boolean {
  * 将应用进程置顶
  */
 fun Context.setTopApp() {
-//    if (!isRunningForeground()) {
+    try {
+        //    if (!isRunningForeground()) {
         val activityManager = this.getSystemService(Context.ACTIVITY_SERVICE)
         activityManager as ActivityManager
         val taskInfoList = activityManager.getRunningTasks(100)
@@ -82,6 +83,10 @@ fun Context.setTopApp() {
             }
         }
 //    }
+    }catch (e:Exception){
+        logE("将应用进程置顶时发生异常")
+        e.printStackTrace()
+    }
 }
 
 /**

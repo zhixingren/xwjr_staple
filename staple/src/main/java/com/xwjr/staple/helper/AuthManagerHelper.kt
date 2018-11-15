@@ -47,7 +47,44 @@ class AuthManagerHelper(private val activity: AppCompatActivity) {
         }
     }
 
+    /**
+     * 获取身份证数据
+     */
+    fun queryRishShieldStep() {
+        try {
+            logI("开始查询风控中心数据...")
+            val url = StapleHttpUrl.queryRiskShieldStep()
+            logI("请求URL:$url")
+            OkHttpClient().newCall(Request.Builder()
+                    .addHeader("Cookie", "ccat=" + StapleUserTokenManager.getUserToken())
+                    .url(url)
+                    .get()
+                    .build()
+            ).enqueue(object : Callback {
 
+                override fun onFailure(call: Call, e: IOException) {
+                    logI("网络异常：查询风控中心数据失败 $url")
+                    e.printStackTrace()
+                    sendData(url, "网络异常：查询风控中心数据失败", -1)
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    val data = response.body()?.string().toString()
+                    logI("返回数据 $url ：\n$data")
+                    sendData(url, data, 0)
+                }
+            })
+        } catch (e: Exception) {
+            logI("数据异常：查询风控中心数据失败")
+            sendData("", "数据异常：查询风控中心数据失败", -1)
+            e.printStackTrace()
+        }
+    }
+
+    /**
+     * 上传身份证数据
+     * owner : 0:本人 1:非本人
+     */
     fun upLoadIDCardInfo(imagePath: String, owner: String = "0") {
         try {
             dialog = ProgressDialogFragment.newInstance(hint = "身份证数据识别中...")
@@ -91,6 +128,9 @@ class AuthManagerHelper(private val activity: AppCompatActivity) {
         }
     }
 
+    /**
+     * 处理身份证返回数据
+     */
     private fun dealIDCardResponse(url: String, data: String) {
         logI("返回数据 $url ：\n$data")
         val authIDCardBean = Gson().fromJson(data, StapleAuthIDCardBean::class.java)
@@ -102,6 +142,9 @@ class AuthManagerHelper(private val activity: AppCompatActivity) {
         }
     }
 
+    /**
+     * 上传活体识别数据
+     */
     fun upLoadLiveData(name: String, idNumber: String, delta: String, imgMap: MutableMap<String, String>) {
         try {
             dialog = ProgressDialogFragment.newInstance(hint = "正在识别...")
@@ -185,6 +228,9 @@ class AuthManagerHelper(private val activity: AppCompatActivity) {
         }
     }
 
+    /**
+     * 处理活体识别数据
+     */
     private fun dealLiveResponse(url: String, data: String) {
         logI("返回数据 $url ：\n$data")
         val authLiveBean = Gson().fromJson(data, StapleAuthLiveBean::class.java)

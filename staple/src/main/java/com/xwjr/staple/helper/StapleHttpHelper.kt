@@ -67,7 +67,7 @@ class StapleHttpHelper(private val activity: AppCompatActivity) {
     fun getCaptchaData() {
         try {
             logI("开始获取图形验证码数据...")
-            val url = StapleHttpUrl.captchaUrl()
+            val url = StapleHttpUrl.getCaptchaUrl()
             logI("请求URL:$url")
             OkHttpClient().newCall(Request.Builder()
                     .url(url)
@@ -113,7 +113,7 @@ class StapleHttpHelper(private val activity: AppCompatActivity) {
             dialog = ProgressDialogFragment.newInstance(hint = "发送中...")
             dialog?.show(activity.supportFragmentManager)
             logI("开始获取短信验证码数据...")
-            val url = StapleHttpUrl.smsCaptchaUrl(mobile, captchaToken, captchaAnswer)
+            val url = StapleHttpUrl.getSmsCaptchaUrl(mobile, captchaToken, captchaAnswer)
             logI("请求URL:$url")
             OkHttpClient().newCall(Request.Builder()
                     .url(url)

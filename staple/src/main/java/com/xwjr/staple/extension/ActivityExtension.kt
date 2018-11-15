@@ -79,6 +79,7 @@ fun Activity.isExistActivity(activity: Activity): Boolean {
         }
         return flag
     } catch (e: Exception) {
+        logE("判断指定Activity是否存在时发生异常")
         e.printStackTrace()
         return false
     }

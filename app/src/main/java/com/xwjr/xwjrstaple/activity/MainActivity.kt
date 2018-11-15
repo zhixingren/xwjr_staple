@@ -21,12 +21,13 @@ class MainActivity : AppCompatActivity() {
 
     private var stapleHelper: StapleHttpHelper? = null
     private var captchaToken = ""
+    private val authManagerHelper = AuthManagerHelper(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        logI("scheme:" +intent.scheme)
+        logI("scheme:" + intent.scheme)
 
         stapleHelper = StapleHttpHelper(this)
 
@@ -75,6 +76,15 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        authManagerHelper.setRiskShieldDataListener(object : AuthManagerHelper.RiskShieldData {
+            override fun liveData(isApproved: Boolean) {
+                showToast(isApproved.toString())
+            }
+
+            override fun idCardData(authIDCardBean: StapleAuthIDCardBean.ResultBean) {
+                showToast(authIDCardBean.toString())
+            }
+        })
 
     }
 
@@ -86,33 +96,13 @@ class MainActivity : AppCompatActivity() {
                     AuthManager.PAGE_INTO_IDCARDSCAN -> {
                         AuthManager.dealIDCardScan(data!!) { filePath ->
                             logI(filePath)
-                            val authManagerHelper = AuthManagerHelper(this)
                             authManagerHelper.upLoadIDCardInfo(filePath)
-                            authManagerHelper.setRiskShieldDataListener(object : AuthManagerHelper.RiskShieldData {
-                                override fun liveData(isApproved: Boolean) {
-
-                                }
-
-                                override fun idCardData(authIDCardBean: StapleAuthIDCardBean.ResultBean) {
-                                    tv_idCardScan2.text = authIDCardBean.name
-                                }
-                            })
                         }
                     }
 
                     AuthManager.PAGE_INTO_LIVENESS -> {
                         AuthManager.dealLivingData(this, data!!) { imagesMap, _, delta ->
-                            val authManagerHelper = AuthManagerHelper(this)
                             authManagerHelper.upLoadLiveData("朱小航", "412326199211116919", delta, imagesMap)
-                            authManagerHelper.setRiskShieldDataListener(object : AuthManagerHelper.RiskShieldData {
-                                override fun liveData(isApproved: Boolean) {
-
-                                }
-
-                                override fun idCardData(authIDCardBean: StapleAuthIDCardBean.ResultBean) {
-
-                                }
-                            })
                         }
                     }
                 }
