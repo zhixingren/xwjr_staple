@@ -23,7 +23,7 @@ open class StapleBaseBean {
                     error_description.isNotNullOrEmpty() -> showToast(error_description)
                     else -> {
                         if (error != null && error?.size!! > 0) {
-                            showToast(ErrorCodeManager.getMessage(error!![0].message, "发生未知错误"))
+                            showToast(ErrorCodeManager.getMessage(error!![0].message, error!![0].message))
                         } else {
                             showToast("发生未知错误")
                         }

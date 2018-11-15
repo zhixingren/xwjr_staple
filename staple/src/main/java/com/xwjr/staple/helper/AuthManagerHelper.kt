@@ -55,8 +55,13 @@ class AuthManagerHelper(private val activity: AppCompatActivity) {
     /**
      * 获取风控中心数据
      */
-    fun queryRishShieldStep() {
+    fun queryRiskShieldStep(showProgress: Boolean = false) {
         try {
+            if (showProgress) {
+                dialog = ProgressDialogFragment.newInstance(hint = "数据获取中...")
+                dialog?.show(activity.supportFragmentManager)
+            }
+
             logI("开始查询风控中心数据...")
             val url = StapleHttpUrl.queryRiskShieldStep()
             logI("请求URL:$url")
@@ -68,18 +73,21 @@ class AuthManagerHelper(private val activity: AppCompatActivity) {
             ).enqueue(object : Callback {
 
                 override fun onFailure(call: Call, e: IOException) {
+                    if (showProgress) dialog?.dismiss()
                     logI("网络异常：查询风控中心数据失败 $url")
                     e.printStackTrace()
                     sendData(url, "网络异常：查询风控中心数据失败", -1)
                 }
 
                 override fun onResponse(call: Call, response: Response) {
+                    if (showProgress) dialog?.dismiss()
                     val data = response.body()?.string().toString()
                     logI("返回数据 $url ：\n$data")
                     sendData(url, data, 2)
                 }
             })
         } catch (e: Exception) {
+            if (showProgress) dialog?.dismiss()
             logI("数据异常：查询风控中心数据失败")
             sendData("", "数据异常：查询风控中心数据失败", -1)
             e.printStackTrace()
@@ -110,10 +118,12 @@ class AuthManagerHelper(private val activity: AppCompatActivity) {
      * 上传身份证数据
      * owner : 0:本人 1:非本人
      */
-    fun upLoadIDCardInfo(imagePath: String, owner: String = "0") {
+    fun upLoadIDCardInfo(imagePath: String, owner: String = "0", showProgress: Boolean = false) {
         try {
-            dialog = ProgressDialogFragment.newInstance(hint = "身份证数据识别中...")
-            dialog?.show(activity.supportFragmentManager)
+            if (showProgress) {
+                dialog = ProgressDialogFragment.newInstance(hint = "身份证数据识别中...")
+                dialog?.show(activity.supportFragmentManager)
+            }
             logI("开始上传身份证识别数据...")
             val url = StapleHttpUrl.upLoadIDCardInfo()
 
@@ -134,21 +144,22 @@ class AuthManagerHelper(private val activity: AppCompatActivity) {
             ).enqueue(object : Callback {
 
                 override fun onFailure(call: Call, e: IOException) {
-                    dialog?.dismiss()
+                    if (showProgress) dialog?.dismiss()
                     logE("网络异常：上传身份证识别数据失败 $url")
                     sendData("", "网络异常，上传身份证识别数据失败", -1)
                     e.printStackTrace()
                 }
 
                 override fun onResponse(call: Call, response: Response) {
-                    dialog?.dismiss()
+                    if (showProgress) dialog?.dismiss()
                     val data = response.body()?.string().toString()
                     sendData(url, data, 0)
                 }
             })
         } catch (e: Exception) {
-            dialog?.dismiss()
+            if (showProgress) dialog?.dismiss()
             logE("发生异常，身份证数据上传异常")
+            sendData("", "发生异常，身份证数据上传异常", -1)
             e.printStackTrace()
         }
     }
@@ -176,10 +187,12 @@ class AuthManagerHelper(private val activity: AppCompatActivity) {
     /**
      * 上传活体识别数据
      */
-    fun upLoadLiveData(name: String, idNumber: String, delta: String, imgMap: MutableMap<String, String>) {
+    fun upLoadLiveData(name: String, idNumber: String, delta: String, imgMap: MutableMap<String, String>, showProgress: Boolean = false) {
         try {
-            dialog = ProgressDialogFragment.newInstance(hint = "正在识别...")
-            dialog?.show(activity.supportFragmentManager)
+            if (showProgress) {
+                dialog = ProgressDialogFragment.newInstance(hint = "正在识别...")
+                dialog?.show(activity.supportFragmentManager)
+            }
             logI("开始上传活体识别数据...")
             val url = StapleHttpUrl.upLoadLiveInfo()
             logI("请求URL:$url")
@@ -240,21 +253,22 @@ class AuthManagerHelper(private val activity: AppCompatActivity) {
             ).enqueue(object : Callback {
 
                 override fun onFailure(call: Call, e: IOException) {
-                    dialog?.dismiss()
+                    if (showProgress) dialog?.dismiss()
                     logE("网络异常：上传活体识别数据失败 $url")
                     sendData("", "网络异常，上传活体识别数据失败", -1)
                     e.printStackTrace()
                 }
 
                 override fun onResponse(call: Call, response: Response) {
-                    dialog?.dismiss()
+                    if (showProgress) dialog?.dismiss()
                     val data = response.body()?.string().toString()
                     sendData(url, data, 1)
                 }
             })
         } catch (e: Exception) {
-            dialog?.dismiss()
+            if (showProgress) dialog?.dismiss()
             logE("发生异常，活体识别数据上传异常")
+            sendData("", "发生异常，活体识别数据上传异常", -1)
             e.printStackTrace()
         }
     }
@@ -290,9 +304,5 @@ class AuthManagerHelper(private val activity: AppCompatActivity) {
 
     fun setRiskShieldDataListener(riskShieldData: RiskShieldData) {
         this.riskShieldData = riskShieldData
-    }
-
-    init {
-        dialog = ProgressDialogFragment.newInstance()
     }
 }

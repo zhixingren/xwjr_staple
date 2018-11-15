@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         AuthManager.getIDCardLicense(this)
         AuthManager.getLivingLicense(this)
         tv_queryRiskShieldData.setOnClickListener {
-            authManagerHelper.queryRishShieldStep()
+            authManagerHelper.queryRiskShieldStep(true)
         }
         tv_idCardScan.setOnClickListener {
             AuthManager.openScanIdActivity(this, side = 0)
@@ -48,12 +48,13 @@ class MainActivity : AppCompatActivity() {
         }
         tv_jwt.setOnClickListener {
             showToast(JWTUtils.getJWT(JWTUtils.SMS))
+            logI(JWTUtils.getJWT(JWTUtils.CONTRACT))
         }
         tv_captcha.setOnClickListener {
-            stapleHelper?.getCaptchaData()
+            stapleHelper?.getCaptchaData(true)
         }
         tv_smsCaptcha.setOnClickListener {
-            stapleHelper?.sendSMSCaptcha("18810409404", captchaToken, et_captcha.text.toString())
+            stapleHelper?.sendSMSCaptcha("18810409404", captchaToken, et_captcha.text.toString(), true)
         }
         tv_webView.setOnClickListener {
             startActivity(Intent(this@MainActivity, WebViewActivity::class.java))
@@ -104,13 +105,13 @@ class MainActivity : AppCompatActivity() {
                     AuthManager.PAGE_INTO_IDCARDSCAN -> {
                         AuthManager.dealIDCardScan(data!!) { filePath ->
                             logI(filePath)
-                            authManagerHelper.upLoadIDCardInfo(filePath)
+                            authManagerHelper.upLoadIDCardInfo(filePath, showProgress = true)
                         }
                     }
 
                     AuthManager.PAGE_INTO_LIVENESS -> {
                         AuthManager.dealLivingData(this, data!!) { imagesMap, _, delta ->
-                            authManagerHelper.upLoadLiveData("朱小航", "412326199211116919", delta, imagesMap)
+                            authManagerHelper.upLoadLiveData("朱小航", "412326199211116919", delta, imagesMap, true)
                         }
                     }
                 }
