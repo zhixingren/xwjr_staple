@@ -93,9 +93,15 @@ gradle配置
                                 }
 
                                 override fun idCardData(authIDCardBean: StapleAuthIDCardBean.ResultBean) {
-                                     //处理身份证数据
+                                    //处理身份证数据
+                                }
+                                
+                                override fun stepData(riskShieldStepBean: StapleRiskShieldStepBean.ResultBean) {
+                                    //处理风控中心数据
                                 }
                             })
+        //获取风控中心相关数据
+        authManagerHelper.queryRiskShieldStep()
         
         //开始扫描身份证 activity:当前activity  fragment:当前fragment（可为null）  side：0(正面)1(反面)
         AuthManager.openScanIdActivity(activity,fragment,side)
@@ -182,6 +188,22 @@ gradle配置
                 showToast("token:$smsCaptchaToken")
             }
         })
+        
+   7.JWT 鉴权
+    
+        //获取JWT值 type: JWTUtils.CONTRACT(合同中心)  JWTUtils.SMS（短信中心）  JWTUtils.LOCATION（定位相关）
+        JWTUtils.getJWT(type)  
+        
+   8.progressDialog 使用
+    
+        //初始化  resId:资源id  hint:提示内容（默认"加载中..."）
+        val progress = ProgressDialogFragment.newInstance(resId,hint)
+        //显示
+        progress.show(supportFragmentManager)
+        //消失
+        progress.dismiss()
+
+
 
         
 ### 注意事项
@@ -190,3 +212,4 @@ gradle配置
     StapleUserTokenManager.saveUserToken(token) //access_token
     2.用户退出登录需调用
     StapleUserTokenManager.clearUserToken()
+    3.所有涉及接口调用的方法，都有 showProgress 参数 代表是否使用 "加载中..." 显示框
