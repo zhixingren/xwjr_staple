@@ -14,17 +14,27 @@
         tools:replace="android:icon,android:theme">
         <activity
             android:name=".activity.MainActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+
+        </activity>
         <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
-                <data android:scheme="wwxjk"/>
+        </activity>
+        <activity android:name=".activity.WebViewActivity">
+
+        </activity>
+        <activity android:name=".activity.H5BackActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="wwxjk" android:host="www.xwjr.com"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.WebViewActivity"></activity>
     </application>
 
 </manifest>

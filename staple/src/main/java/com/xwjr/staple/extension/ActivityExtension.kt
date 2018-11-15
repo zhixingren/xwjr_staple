@@ -1,6 +1,9 @@
 package com.xwjr.staple.extension
 
 import android.app.Activity
+import android.app.ActivityManager
+import android.content.Context
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -52,5 +55,31 @@ fun Activity.setWindowBG(resId: Int? = null, res: Drawable? = null, file: File? 
     } catch (e: Exception) {
         logI("发生异常：设置window背景失败")
         e.printStackTrace()
+    }
+}
+
+/**
+ * 判断指定Activity是否存在
+ */
+fun Activity.isExistActivity(activity: Activity): Boolean {
+    try {
+        val intent = Intent(this, activity::class.java)
+        val cmpName = intent.resolveActivity(packageManager)
+        var flag = false
+        if (cmpName != null) { // 说明系统中存在这个activity
+            val am = getSystemService(Context.ACTIVITY_SERVICE)
+            am as ActivityManager
+            val taskInfoList = am.getRunningTasks(10)
+            for (item in taskInfoList) {
+                if (item.baseActivity == cmpName) {
+                    flag = true
+                    break
+                }
+            }
+        }
+        return flag
+    } catch (e: Exception) {
+        e.printStackTrace()
+        return false
     }
 }

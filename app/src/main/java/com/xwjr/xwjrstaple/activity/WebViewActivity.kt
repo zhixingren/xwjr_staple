@@ -1,11 +1,15 @@
 package com.xwjr.xwjrstaple.activity
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.xwjr.staple.activity.StapleWebView
 import com.xwjr.staple.extension.logI
 import com.xwjr.xwjrstaple.R
 import kotlinx.android.synthetic.main.activity_webview.*
+import android.content.Intent.ACTION_VIEW
+import android.net.Uri
+
 
 class WebViewActivity : AppCompatActivity() {
 
@@ -14,7 +18,7 @@ class WebViewActivity : AppCompatActivity() {
         setContentView(R.layout.activity_webview)
 
 //        webView.loadUrl("http://debugx5.qq.com")
-        webView.loadUrl("http://p2psp.kfxfd.cn:9080/mobile/more")
+        webView.loadUrl("http://10.99.96.6:18080/insurance/payResult")
 //        webView.loadUrl("http://www.baidu.com")
 //        webView.loadUrl("http://activity.m.duiba.com.cn/chome/index?from=login&spm=17959.1.1.1")
 //        webView.loadUrl("https://wxpay.wxutil.com/mch/pay/h5.v2.php")
@@ -36,6 +40,11 @@ class WebViewActivity : AppCompatActivity() {
         }
         webView.registerHandler("Phone") { _, _ ->
             logI("webViewHandler NoBackNoBackNoBackNoBackNoBack")
+        }
+        webView.registerHandler("UseBrowser") { data, _ ->
+            val uri = Uri.parse(data)
+            val intent = Intent(ACTION_VIEW, uri)
+            startActivity(intent)
         }
 
         webView.setProgressBarColors(0xffff0000.toInt(),0xff00ff00.toInt())

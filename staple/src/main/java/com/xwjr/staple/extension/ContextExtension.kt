@@ -1,5 +1,6 @@
 package com.xwjr.staple.extension
 
+import android.app.ActivityManager
 import android.app.AppOpsManager
 import android.content.Context
 import android.os.Build
@@ -44,17 +45,67 @@ fun Context.isNotificationEnabled(): Boolean {
             return true
         }
     } catch (e: ClassNotFoundException) {
+        logE("获取通知权限 ClassNotFoundException")
         e.printStackTrace()
     } catch (e: NoSuchMethodException) {
+        logE("获取通知权限 NoSuchMethodException")
         e.printStackTrace()
     } catch (e: NoSuchFieldException) {
+        logE("获取通知权限 NoSuchFieldException")
         e.printStackTrace()
     } catch (e: InvocationTargetException) {
+        logE("获取通知权限 InvocationTargetException")
         e.printStackTrace()
     } catch (e: IllegalAccessException) {
+        logE("获取通知权限 IllegalAccessException")
         e.printStackTrace()
     } catch (e: Exception) {
+        logE("获取通知权限 Exception")
         e.printStackTrace()
     }
     return false
 }
+
+/**
+ * 将应用进程置顶
+ */
+fun Context.setTopApp() {
+//    if (!isRunningForeground()) {
+        val activityManager = this.getSystemService(Context.ACTIVITY_SERVICE)
+        activityManager as ActivityManager
+        val taskInfoList = activityManager.getRunningTasks(100)
+        for (item in taskInfoList) {
+            /**找到本应用的 task，并将它切换到前台*/
+            if (item.topActivity.packageName == packageName) {
+                activityManager.moveTaskToFront(item.id, 0)
+                break
+            }
+        }
+//    }
+}
+
+/**
+ * 当前app是否在前台运行
+ */
+fun Context.isRunningForeground(): Boolean {
+    try {
+        val activityManager = this.getSystemService(Context.ACTIVITY_SERVICE)
+        activityManager as ActivityManager
+        val appProcessList = activityManager.runningAppProcesses
+        /**枚举进程*/
+        for (item in appProcessList) {
+            if (item.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                if (item.processName == applicationInfo.processName) {
+                    return true
+                }
+            }
+        }
+    } catch (e: Exception) {
+        logE("获取app是否在前台运行时发生异常")
+        e.printStackTrace()
+    }
+    return false
+}
+
+
+
