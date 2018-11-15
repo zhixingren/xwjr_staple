@@ -14,6 +14,7 @@ import com.xwjr.staple.fragment.ProgressDialogFragment
 import com.xwjr.staple.manager.StapleUserTokenManager
 import com.xwjr.staple.model.StapleAuthIDCardBean
 import com.xwjr.staple.model.StapleAuthLiveBean
+import com.xwjr.staple.model.StapleRiskShieldStepBean
 import com.xwjr.staple.util.FileUtil
 import okhttp3.*
 import java.io.IOException
@@ -42,13 +43,17 @@ class AuthManagerHelper(private val activity: AppCompatActivity) {
                 1 -> {
                     dealLiveResponse(url, data)
                 }
+                2 -> {
+                    dealRiskShieldStep(url, data)
+                }
 
             }
         }
     }
 
+
     /**
-     * 获取身份证数据
+     * 获取风控中心数据
      */
     fun queryRishShieldStep() {
         try {
@@ -71,7 +76,7 @@ class AuthManagerHelper(private val activity: AppCompatActivity) {
                 override fun onResponse(call: Call, response: Response) {
                     val data = response.body()?.string().toString()
                     logI("返回数据 $url ：\n$data")
-                    sendData(url, data, 0)
+                    sendData(url, data, 2)
                 }
             })
         } catch (e: Exception) {
@@ -79,6 +84,26 @@ class AuthManagerHelper(private val activity: AppCompatActivity) {
             sendData("", "数据异常：查询风控中心数据失败", -1)
             e.printStackTrace()
         }
+    }
+
+    /**
+     * 处理风控中心数据
+     */
+    private fun dealRiskShieldStep(url: String, data: String) {
+        try {
+            logI("返回数据 $url ：\n$data")
+            val riskShieldStepBean = Gson().fromJson(data, StapleRiskShieldStepBean::class.java)
+            if (riskShieldStepBean.checkCodeErrorShow()) {
+                if (riskShieldStepBean.result != null)
+                    riskShieldData?.stepData(riskShieldStepBean.result!!)
+                else
+                    showToast("风控平台相关数据为空")
+            }
+        } catch (e: Exception) {
+            showToast("风控平台数据解析异常")
+            e.printStackTrace()
+        }
+
     }
 
     /**
@@ -132,14 +157,20 @@ class AuthManagerHelper(private val activity: AppCompatActivity) {
      * 处理身份证返回数据
      */
     private fun dealIDCardResponse(url: String, data: String) {
-        logI("返回数据 $url ：\n$data")
-        val authIDCardBean = Gson().fromJson(data, StapleAuthIDCardBean::class.java)
-        if (authIDCardBean.checkCodeErrorShow()) {
-            if (authIDCardBean.result != null)
-                riskShieldData?.idCardData(authIDCardBean.result!!)
-            else
-                showToast("身份证识别，关键数据为空，请重试..")
+        try {
+            logI("返回数据 $url ：\n$data")
+            val authIDCardBean = Gson().fromJson(data, StapleAuthIDCardBean::class.java)
+            if (authIDCardBean.checkCodeErrorShow()) {
+                if (authIDCardBean.result != null)
+                    riskShieldData?.idCardData(authIDCardBean.result!!)
+                else
+                    showToast("身份证识别关键数据为空")
+            }
+        } catch (e: Exception) {
+            showToast("身份证识别数据解析异常")
+            e.printStackTrace()
         }
+
     }
 
     /**
@@ -232,15 +263,21 @@ class AuthManagerHelper(private val activity: AppCompatActivity) {
      * 处理活体识别数据
      */
     private fun dealLiveResponse(url: String, data: String) {
-        logI("返回数据 $url ：\n$data")
-        val authLiveBean = Gson().fromJson(data, StapleAuthLiveBean::class.java)
-        if (authLiveBean.checkCodeErrorShow()) {
-            if (authLiveBean.result != null && authLiveBean?.result?.approved != null) {
-                riskShieldData?.liveData(authLiveBean.result?.approved!!)
-            } else {
-                showToast("活体识别，关键数据为空，请重试..")
+        try {
+            logI("返回数据 $url ：\n$data")
+            val authLiveBean = Gson().fromJson(data, StapleAuthLiveBean::class.java)
+            if (authLiveBean.checkCodeErrorShow()) {
+                if (authLiveBean.result != null && authLiveBean?.result?.approved != null) {
+                    riskShieldData?.liveData(authLiveBean.result?.approved!!)
+                } else {
+                    showToast("活体识别关键数据为空")
+                }
             }
+        } catch (e: Exception) {
+            showToast("活体识别数据解析异常")
+            e.printStackTrace()
         }
+
     }
 
     private var riskShieldData: RiskShieldData? = null
@@ -248,6 +285,7 @@ class AuthManagerHelper(private val activity: AppCompatActivity) {
     interface RiskShieldData {
         fun idCardData(authIDCardBean: StapleAuthIDCardBean.ResultBean)
         fun liveData(isApproved: Boolean)
+        fun stepData(riskShieldStepBean: StapleRiskShieldStepBean.ResultBean)
     }
 
     fun setRiskShieldDataListener(riskShieldData: RiskShieldData) {

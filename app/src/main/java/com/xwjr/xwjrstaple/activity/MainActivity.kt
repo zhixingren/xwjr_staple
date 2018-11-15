@@ -14,6 +14,7 @@ import com.xwjr.staple.manager.AuthManager
 import com.xwjr.staple.helper.AuthManagerHelper
 import com.xwjr.staple.helper.StapleHttpHelper
 import com.xwjr.staple.model.StapleAuthIDCardBean
+import com.xwjr.staple.model.StapleRiskShieldStepBean
 import com.xwjr.xwjrstaple.R
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -33,6 +34,9 @@ class MainActivity : AppCompatActivity() {
 
         AuthManager.getIDCardLicense(this)
         AuthManager.getLivingLicense(this)
+        tv_queryRiskShieldData.setOnClickListener {
+            authManagerHelper.queryRishShieldStep()
+        }
         tv_idCardScan.setOnClickListener {
             AuthManager.openScanIdActivity(this, side = 0)
         }
@@ -77,6 +81,10 @@ class MainActivity : AppCompatActivity() {
         })
 
         authManagerHelper.setRiskShieldDataListener(object : AuthManagerHelper.RiskShieldData {
+            override fun stepData(riskShieldStepBean: StapleRiskShieldStepBean.ResultBean) {
+                showToast(riskShieldStepBean.toString())
+            }
+
             override fun liveData(isApproved: Boolean) {
                 showToast(isApproved.toString())
             }
