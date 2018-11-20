@@ -12,6 +12,9 @@ gradle配置
     
     android{
         defaultConfig{
+            
+            ndk { abiFilters "armeabi"}
+        
             manifestPlaceholders = [
                 JPUSH_PKGNAME: applicationId,
                 JPUSH_APPKEY : "*****************", //JPush 上注册的包名对应的 Appkey.
