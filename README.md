@@ -195,6 +195,7 @@ gradle配置
    7.JWT 鉴权
     
         //获取JWT值 type: JWTUtils.CONTRACT(合同中心)  JWTUtils.SMS（短信中心）  JWTUtils.LOCATION（定位相关）
+        //  JWTUtils.XIAODAI(小贷系统)
         JWTUtils.getJWT(type)  
         
    8.progressDialog 使用
