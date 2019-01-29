@@ -13,6 +13,7 @@ object JWTUtils {
     val CONTRACT = "CONTRACT"//合同中心数据
     val SMS = "SMS"//短信中心数据
     val LOCATION = "LOCATION"//定位相关数据
+    val XIAODAI = "XIAODAI"//小贷
     fun getJWT(type: String): String {
         return when (type) {
             LOCATION -> {
@@ -36,13 +37,20 @@ object JWTUtils {
                     getToken("51b3776aa44ed7d08d4f541ef0f99d26")
                 }
             }
+            XIAODAI -> {
+                if (StapleConfig.isDebug) {
+                    getToken("85a88981250f5c38c053e8de1fcba11a")
+                } else {
+                    getToken("11f4e7da4ced644befc897a483da2dfb")
+                }
+            }
             else -> {
                 ""
             }
         }
     }
 
-    private fun getToken(key: String): String {
+    fun getToken(key: String): String {
         val header = getBase64("{\"alg\":\"HS256\",\"typ\":\"JWT\"}")
         val playHolder = getBase64("{}")
         val secret = hMacSHA256(URLEncoder.encode(header) + "." + URLEncoder.encode(playHolder), key)

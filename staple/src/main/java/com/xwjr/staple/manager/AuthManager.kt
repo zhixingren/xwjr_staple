@@ -53,7 +53,7 @@ object AuthManager {
                     idCardLicense = true
                     logI("身份证识别联网授权 OK")
                 } else {
-                    logI("身份证识别联网授权 False")
+                    logI("身份证识别联网授权 False --  code:$code")
                     laterDeal(retryTime) {
                         //60s后重试
                         getIDCardLicense(context)
@@ -179,7 +179,7 @@ object AuthManager {
                     logI("活体检测联网授权 OK")
                     true
                 } else {
-                    logI("活体检测联网授权 False")
+                    logI("活体检测联网授权 False --  code:$code")
                     laterDeal(retryTime) {
                         //60s后重试
                         getLivingLicense(context)

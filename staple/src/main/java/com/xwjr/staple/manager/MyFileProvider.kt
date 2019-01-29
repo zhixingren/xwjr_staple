@@ -13,7 +13,7 @@ object MyFileProvider {
     /**
      * .getUriForFile(this, file);
      */
-    private fun getUriForFile(context: Context, file: File): Uri? {
+    fun getUriForFile(context: Context, file: File): Uri? {
         return if (Build.VERSION.SDK_INT >= 24) {
             FileProvider.getUriForFile(context,
                     context.packageName + ".fileprovider",
