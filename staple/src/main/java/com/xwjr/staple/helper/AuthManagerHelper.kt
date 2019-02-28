@@ -1,6 +1,5 @@
 package com.xwjr.staple.helper
 
-import android.app.Activity
 import android.os.Handler
 import android.os.Looper
 import android.support.v7.app.AppCompatActivity

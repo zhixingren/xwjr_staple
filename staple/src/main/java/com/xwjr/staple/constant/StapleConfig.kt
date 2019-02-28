@@ -13,6 +13,7 @@ object StapleConfig {
     const val WWXHB = "WWXHB"//望望先花b端来源
     const val XWB = "XWB"//希望宝来源
     const val APPHUB = "APPHUB"//apphub来源
+    const val XIAODAI = "XIAODAI"//小贷来源
 
 
     private val fileDir = Environment.getExternalStorageDirectory().path//下载的apk存储路径
@@ -28,7 +29,8 @@ object StapleConfig {
                       xwjr: (() -> Unit)? = null,
                       xwb: (() -> Unit)? = null,
                       wwxjk: (() -> Unit)? = null,
-                      apphub: (() -> Unit)? = null) {
+                      apphub: (() -> Unit)? = null,
+                      xiaodai: (() -> Unit)? = null) {
         when (appSource) {
             WWXHB -> {
                 if (wwxhb != null) {
@@ -58,6 +60,11 @@ object StapleConfig {
             APPHUB -> {
                 if (apphub != null) {
                     apphub()
+                }
+            }
+            XIAODAI -> {
+                if (xiaodai != null) {
+                    xiaodai()
                 }
             }
         }
@@ -109,6 +116,13 @@ object StapleConfig {
                 } else {
                     logI("apphub无生产环境")
                     ""
+                }
+            }
+            XIAODAI -> {
+                if (isDebug) {
+                    "c473af50-78ad-11e6-a8c4-c5645e28ea42"
+                } else {
+                    "5367ee50-7d73-11e6-a6ea-5592d4426616"
                 }
             }
             else -> {
@@ -166,6 +180,13 @@ object StapleConfig {
                     ""
                 }
             }
+            XIAODAI -> {
+                if (isDebug) {
+                    "54751dd32c825fcccdc2e297674f023b"
+                } else {
+                    "f38c4936ef58a712348b5e3a1122df18"
+                }
+            }
             else -> {
                 logE("发生异常：未找到对应的AppSecret")
                 ""
@@ -209,6 +230,10 @@ object StapleConfig {
                 createFileDir("APPHUB", "img")
                 "$fileDir/APPHUB/img"
             }
+            XIAODAI->{
+                createFileDir("MLOAN", "img")
+                "$fileDir/MLOAN/img"
+            }
             else -> {
                 logE("发生异常：未找到对应的App来源,无法创建相应的文件夹")
                 ""
@@ -238,6 +263,9 @@ object StapleConfig {
             }
             APPHUB -> {
                 "APPHUB.png"
+            }
+            XIAODAI->{
+                "XIAODAI.png"
             }
             else -> {
                 logE("发生异常：未找到对应的App来源,无法创建相应的文件夹")
@@ -275,6 +303,10 @@ object StapleConfig {
                 createFileDir("APPHUB", "apk")
                 "$fileDir/APPHUB/apk"
             }
+            XIAODAI->{
+                createFileDir("MLOAN", "apk")
+                "$fileDir/MLOAN/apk"
+            }
             else -> {
                 logE("发生异常：未找到对应的App来源,无法创建相应的文件夹")
                 ""
@@ -305,6 +337,9 @@ object StapleConfig {
             APPHUB -> {
                 "APPHUB.apk"
             }
+            XIAODAI->{
+                "XIAODAI.apk"
+            }
             else -> {
                 logE("发生异常：未找到对应的App来源,无法创建相应的文件夹")
                 ""
@@ -334,6 +369,9 @@ object StapleConfig {
             }
             APPHUB -> {
                 "安装失败，请前往'文件管理--APPHUB--apk'手动安装"
+            }
+            XIAODAI->{
+                "安装失败，请前往'文件管理--MLOAN--apk'手动安装"
             }
             else -> {
                 logE("发生异常：未找到对应的App来源,无法给出提示信息")
@@ -384,6 +422,9 @@ object StapleConfig {
             APPHUB -> {
                 logE("发生异常：apphub无风控中心来源数据")
                 ""
+            }
+            XIAODAI->{
+                "xiaodai"
             }
             else -> {
                 logE("发生异常：未找到对应的App来源")

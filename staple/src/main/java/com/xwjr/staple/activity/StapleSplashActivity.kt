@@ -151,6 +151,9 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
                     },
                     apphub = {
                         setWindowBG(resId = R.mipmap.staple_apphub_window_bg)
+                    },
+                    xiaodai = {
+                        setWindowBG(resId = R.mipmap.staple_xiaodai_window_bg)
                     }
             )
         } catch (e: Exception) {
