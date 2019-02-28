@@ -231,8 +231,8 @@ object StapleConfig {
                 "$fileDir/APPHUB/img"
             }
             XIAODAI->{
-                createFileDir("MLOAN", "img")
-                "$fileDir/MLOAN/img"
+                createFileDir("XIAODAI", "img")
+                "$fileDir/XIAODAI/img"
             }
             else -> {
                 logE("发生异常：未找到对应的App来源,无法创建相应的文件夹")
@@ -304,8 +304,8 @@ object StapleConfig {
                 "$fileDir/APPHUB/apk"
             }
             XIAODAI->{
-                createFileDir("MLOAN", "apk")
-                "$fileDir/MLOAN/apk"
+                createFileDir("XIAODAI", "apk")
+                "$fileDir/XIAODAI/apk"
             }
             else -> {
                 logE("发生异常：未找到对应的App来源,无法创建相应的文件夹")
@@ -371,7 +371,7 @@ object StapleConfig {
                 "安装失败，请前往'文件管理--APPHUB--apk'手动安装"
             }
             XIAODAI->{
-                "安装失败，请前往'文件管理--MLOAN--apk'手动安装"
+                "安装失败，请前往'文件管理--XIAODAI--apk'手动安装"
             }
             else -> {
                 logE("发生异常：未找到对应的App来源,无法给出提示信息")
