@@ -14,34 +14,43 @@ object JWTUtils {
     val SMS = "SMS"//短信中心数据
     val LOCATION = "LOCATION"//定位相关数据
     val XIAODAI = "XIAODAI"//小贷
-    fun getJWT(type: String): String {
+    val FKZX = "FKZX"//风控中心
+
+    fun getKey(type: String): String {
         return when (type) {
             LOCATION -> {
                 if (StapleConfig.isDebug) {
-                    getToken("a93981e52197e71c353219ee5f3bfe9f")
+                    "a93981e52197e71c353219ee5f3bfe9f"
                 } else {
-                    getToken("c6f948b0783a2db556c40d488e281e1c")
+                    "c6f948b0783a2db556c40d488e281e1c"
                 }
             }
             CONTRACT -> {
                 if (StapleConfig.isDebug) {
-                    getToken("bc148b51237d36b1a9c4fc71f21d28f6")
+                    "bc148b51237d36b1a9c4fc71f21d28f6"
                 } else {
-                    getToken("fe897cffada1cb2c8821b0b29eadbd8b")
+                    "fe897cffada1cb2c8821b0b29eadbd8b"
                 }
             }
             SMS -> {
                 if (StapleConfig.isDebug) {
-                    getToken("85a88981250f5c38c053e8de1fcba11a")
+                    "85a88981250f5c38c053e8de1fcba11a"
                 } else {
-                    getToken("51b3776aa44ed7d08d4f541ef0f99d26")
+                    "51b3776aa44ed7d08d4f541ef0f99d26"
                 }
             }
             XIAODAI -> {
                 if (StapleConfig.isDebug) {
-                    getToken("85a88981250f5c38c053e8de1fcba11a")
+                    "85a88981250f5c38c053e8de1fcba11a"
                 } else {
-                    getToken("11f4e7da4ced644befc897a483da2dfb")
+                    "11f4e7da4ced644befc897a483da2dfb"
+                }
+            }
+            FKZX -> {
+                if (StapleConfig.isDebug) {
+                    "12a57d7feab2e2c73701258e0bdd4a14"
+                } else {
+                    "de914736569cd5baaf96e7d0a3e824da"
                 }
             }
             else -> {
@@ -50,9 +59,24 @@ object JWTUtils {
         }
     }
 
+    fun getJWT(type: String): String {
+        return getToken(getKey(type))
+    }
+
+    fun getJWT(type: String, playHolders: String): String {
+        return getToken(getKey(type), playHolders)
+    }
+
     fun getToken(key: String): String {
         val header = getBase64("{\"alg\":\"HS256\",\"typ\":\"JWT\"}")
         val playHolder = getBase64("{}")
+        val secret = hMacSHA256(URLEncoder.encode(header) + "." + URLEncoder.encode(playHolder), key)
+        return "$header.$playHolder.$secret"
+    }
+
+    fun getToken(key: String, playHolders: String): String {
+        val header = getBase64("{\"alg\":\"HS256\",\"typ\":\"JWT\"}")
+        val playHolder = getBase64(playHolders)
         val secret = hMacSHA256(URLEncoder.encode(header) + "." + URLEncoder.encode(playHolder), key)
         return "$header.$playHolder.$secret"
     }

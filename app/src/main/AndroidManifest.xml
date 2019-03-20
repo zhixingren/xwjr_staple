@@ -12,27 +12,26 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon,android:theme">
+        <activity android:name=".activity.FileReaderActivity"></activity>
         <activity
             android:name=".activity.MainActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-        <activity android:name=".activity.WebViewActivity">
-
-        </activity>
+        <activity android:name=".activity.WebViewActivity"></activity>
         <activity android:name=".activity.H5BackActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="wwxjk"/>
+
+                <data android:scheme="wwxjk" />
             </intent-filter>
         </activity>
     </application>

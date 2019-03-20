@@ -47,8 +47,9 @@ class MainActivity : AppCompatActivity() {
             AuthManager.startLivingDetect(this)
         }
         tv_jwt.setOnClickListener {
-            showToast(JWTUtils.getJWT(JWTUtils.SMS))
-            logI(JWTUtils.getJWT(JWTUtils.CONTRACT))
+            val dataMap = HashMap<String,String>()
+            dataMap["name"] = "吕正志"
+            logI(JWTUtils.getToken(JWTUtils.getKey(JWTUtils.FKZX),"{\"name\":\"吕正志\"}"))
         }
         tv_captcha.setOnClickListener {
             stapleHelper?.getCaptchaData(true)
@@ -66,6 +67,10 @@ class MainActivity : AppCompatActivity() {
             laterDeal {
                 progress.dismiss()
             }
+        }
+
+        tv_fileReader.setOnClickListener {
+            startActivity(Intent(this@MainActivity,FileReaderActivity::class.java))
         }
 
         stapleHelper?.addCaptchaListener(object : StapleHttpHelper.CaptchaListener {
