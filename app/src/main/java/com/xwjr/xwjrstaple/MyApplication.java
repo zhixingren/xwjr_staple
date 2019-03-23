@@ -20,7 +20,7 @@ public class MyApplication extends Application {
         StapleUtils.init(this);
 
         StapleConfig.INSTANCE.setAppSource(StapleConfig.XIAODAI);
-        StapleConfig.INSTANCE.setDebug(true);
+        StapleConfig.INSTANCE.setDebug(false);
 
         StapleUserTokenManager.INSTANCE.saveUserToken("831b3a594d3c4611240b704a288712d79b24229dcb547445bfda968cbfb71074");
 

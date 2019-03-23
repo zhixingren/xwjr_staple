@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException
  * .err()
  */
 fun String.err(): String {
-    return "#" + this
+    return "#$this"
 }
 
 /**
@@ -47,7 +47,7 @@ fun String.md5(): String {
             }
             result.append(temp)
         }
-        logI("md5加密成功：" + result.toString())
+        logI("md5加密成功：$result")
         return result.toString()
     } catch (e: NoSuchAlgorithmException) {
         logI("发生异常：md5加密")

@@ -1,6 +1,7 @@
 package com.xwjr.staple.constant
 
 import android.os.Environment
+import com.xwjr.staple.extension.chmodPath
 import com.xwjr.staple.extension.logE
 import com.xwjr.staple.extension.logI
 import com.xwjr.staple.extension.md5
@@ -230,7 +231,7 @@ object StapleConfig {
                 createFileDir("APPHUB", "img")
                 "$fileDir/APPHUB/img"
             }
-            XIAODAI->{
+            XIAODAI -> {
                 createFileDir("XIAODAI", "img")
                 "$fileDir/XIAODAI/img"
             }
@@ -264,7 +265,7 @@ object StapleConfig {
             APPHUB -> {
                 "APPHUB.png"
             }
-            XIAODAI->{
+            XIAODAI -> {
                 "XIAODAI.png"
             }
             else -> {
@@ -303,7 +304,7 @@ object StapleConfig {
                 createFileDir("APPHUB", "apk")
                 "$fileDir/APPHUB/apk"
             }
-            XIAODAI->{
+            XIAODAI -> {
                 createFileDir("XIAODAI", "apk")
                 "$fileDir/XIAODAI/apk"
             }
@@ -337,7 +338,7 @@ object StapleConfig {
             APPHUB -> {
                 "APPHUB.apk"
             }
-            XIAODAI->{
+            XIAODAI -> {
                 "XIAODAI.apk"
             }
             else -> {
@@ -370,7 +371,7 @@ object StapleConfig {
             APPHUB -> {
                 "安装失败，请前往'文件管理--APPHUB--apk'手动安装"
             }
-            XIAODAI->{
+            XIAODAI -> {
                 "安装失败，请前往'文件管理--XIAODAI--apk'手动安装"
             }
             else -> {
@@ -394,6 +395,7 @@ object StapleConfig {
                 file.mkdir()
             }
         }
+        chmodPath(filePath)
     }
 
     /**
@@ -423,7 +425,7 @@ object StapleConfig {
                 logE("发生异常：apphub无风控中心来源数据")
                 ""
             }
-            XIAODAI->{
+            XIAODAI -> {
                 "xiaodai"
             }
             else -> {

@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.staple_update_hint.view.*
 class UpdateDialogFragment : DialogFragment(), StapleHttpContract {
 
 
-    private var cancelAble = false
+    private var forceUpdate = false
     private var downloadUrl = ""
     private var version = ""
     private var content = ""
@@ -36,7 +36,7 @@ class UpdateDialogFragment : DialogFragment(), StapleHttpContract {
         fun newInstance(cancelAble: Boolean, downloadUrl: String, version: String, content: String): UpdateDialogFragment {
             return UpdateDialogFragment().apply {
                 arguments = Bundle().apply {
-                    putBoolean("cancelAble", cancelAble)
+                    putBoolean("forceUpdate", cancelAble)
                     putString("downloadUrl", downloadUrl)
                     putString("version", version)
                     putString("content", content)
@@ -47,7 +47,7 @@ class UpdateDialogFragment : DialogFragment(), StapleHttpContract {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        cancelAble = arguments?.getBoolean("cancelAble")!!
+        forceUpdate = arguments?.getBoolean("forceUpdate")!!
         downloadUrl = arguments?.getString("downloadUrl")!!
         version = arguments?.getString("version")!!
         content = arguments?.getString("content")!!
@@ -74,10 +74,10 @@ class UpdateDialogFragment : DialogFragment(), StapleHttpContract {
         }
 
         //是否显示稍后更新按钮
-        if (cancelAble) {
-            updateView?.tv_updateLater?.visibility = View.VISIBLE
-        } else {
+        if (forceUpdate) {
             updateView?.tv_updateLater?.visibility = View.GONE
+        } else {
+            updateView?.tv_updateLater?.visibility = View.VISIBLE
         }
         //版本号
         updateView?.tv_version?.text = version
@@ -112,20 +112,19 @@ class UpdateDialogFragment : DialogFragment(), StapleHttpContract {
             downloadUrl -> {
                 updateView?.tv_updateNow?.isEnabled = false
                 data as Bundle
-                updateView?.pb?.progress = data.getInt("progress")
-                val percent = "$data%"
-                updateView?.tv_updateNow?.text = percent
+                val percent = data.getInt("progress")
+                updateView?.pb?.progress = percent
+                val percentDes = "$percent%"
+                updateView?.tv_updateNow?.text = percentDes
                 updateView?.tv_updateNow?.setOnClickListener { }
-                if (data == 100) {
+                if (percent == 100) {
                     updateView?.tv_updateNow?.isEnabled = true
                     updateView?.tv_updateNow?.text = "安装"
                     updateView?.tv_updateNow?.setOnClickListener {
                         install()
                     }
                     install()
-
                 }
-
             }
             downloadUrl.err() -> {
                 updateView?.tv_updateNow?.isEnabled = true

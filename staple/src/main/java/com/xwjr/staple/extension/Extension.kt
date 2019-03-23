@@ -164,3 +164,36 @@ fun Any?.getFile(filePath: String): File? {
         return null
     }
 }
+
+/**
+ * 获取文件并赋予 777 权限
+ */
+fun Any?.chmodPath(path: String) {
+    try {
+        try {
+            //给各个目录授予权限
+            val filePaths = path.split("/")
+            val sb = StringBuilder()
+            for (i in filePaths.indices) {
+                sb.append(filePaths[i])
+                if (i < filePaths.size - 1) {
+                    sb.append("/")
+                }
+                val cmd = arrayOf("chmod", "777", sb.toString())
+                val processBuilder = ProcessBuilder(*cmd)
+                try {
+                    processBuilder.start()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    logE("文件授权chmod异常->filePath:$path")
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            logE("文件授权chmod异常->path:$path")
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+        logE("获取文件异常->path:$path")
+    }
+}
