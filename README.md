@@ -51,7 +51,11 @@ gradle配置
     
     在application里进行是否在后台运行的统计
     
+    public final static int APP_STATUS_KILLED = 0; // 表示应用是被杀死后在启动的
+    public final static int APP_STATUS_NORMAL = 1; // 表示应用时正常的启动流程
+    public static int APP_STATUS = APP_STATUS_KILLED; // 记录App的启动状态
     private int mActivityCount = 0;
+    
     registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
@@ -101,6 +105,13 @@ gradle配置
         if (AppStatusUtils.isNeedRestart(this)) {
                 AppStatusUtils.reStartApp(this,activity);
             }
+        if (MyApplication.APP_STATUS != MyApplication.APP_STATUS_NORMAL) { // 非正常启动流程，直接重新初始化应用界面
+                AppStatusUtils.reStartApp(this, new WelcomeActivity());
+                return;
+            }
+            
+     在开屏页最先调用的地方增加如下内容
+        MyApplication.APP_STATUS = MyApplication.APP_STATUS_NORMAL; // App正常的启动，设置App的启动状态为正常启动
             
      如果开屏页没有继承StapleSplashActivity，需要在开屏页 最先调用的地方 增加如下内容(注意：尤其开屏页也继承了baseActivity)：
          AppStatusUtils.saveHaveActivityKilledStatus(this, "");
