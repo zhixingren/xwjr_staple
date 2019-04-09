@@ -47,7 +47,66 @@ gradle配置
           }
         }
         
- 2.开屏图相关功能会自动处理，如需更改默认图，可以增加同名资源文件，或者修改此库，具体名称如下
+ 2.app有activity在后台被回收后，如果需要处理，则进行如下处理
+    
+    在application里进行是否在后台运行的统计
+    
+    private int mActivityCount = 0;
+    registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+                mActivityCount++;
+                AppStatusUtils.saveAppInBackgroundStatus(context,String.valueOf(mActivityCount));
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+                mActivityCount--;
+                AppStatusUtils.saveAppInBackgroundStatus(context,String.valueOf(mActivityCount));
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+
+            }
+        });
+        
+        
+     在baseActivity里的onDestory方法增加如下内容：
+        if (AppStatusUtils.isAppInBackground(this)) {
+            AppStatusUtils.saveHaveActivityKilledStatus(this, "true");
+        }
+        
+     在baseActivity里的onCreate方法增加如下内容：
+        if (AppStatusUtils.isNeedRestart(this)) {
+                AppStatusUtils.reStartApp(this);
+            }
+            
+     如果开屏页没有继承StapleSplashActivity，需要在开屏页增加如下内容：
+         AppStatusUtils.saveHaveActivityKilledStatus(this, "");
+            
+            
+ 3.开屏图相关功能会自动处理，如需更改默认图，可以增加同名资源文件，或者修改此库，具体名称如下
     
     staple_apphub_window_bg.png   --  apphub开屏图
     staple_wwxhb_window_bg.png  --  望望先花b端开屏图
@@ -58,7 +117,7 @@ gradle配置
     staple_xwb_window_bg.png  --  希望宝开屏图
     staple_xwjr_window_bg.png  --  希望金融开屏图
  
- 3.推送功能目前只支持简单的打开app操作，最好给用户配置alias 和 tag， 详见下方代码
+ 4.推送功能目前只支持简单的打开app操作，最好给用户配置alias 和 tag， 详见下方代码
  
     alias以用户手机号为标准，
  
@@ -82,7 +141,7 @@ gradle配置
      tags.add("B");
      JPushInterface.setTags(this, 5233, tags);
      
- 4.身份证识别/活体检测相关功能
+ 5.身份证识别/活体检测相关功能
  
         //尽量提前调用
         AuthManager.getIDCardLicense(this)
@@ -133,7 +192,7 @@ gradle配置
             e.printStackTrace()
         }
      
-  5.webView相关
+  6.webView相关
         
         StapleWebView
         
@@ -172,7 +231,7 @@ gradle配置
                super.onBackPressed()
          }   
          
-   6.其他网络请求
+   7.其他网络请求
    
        //初始化stapleHttpHelper
        var stapleHttpHelper = StapleHttpHelper(this)
@@ -192,14 +251,14 @@ gradle配置
             }
         })
         
-   7.JWT 鉴权
+   8.JWT 鉴权
     
         //获取JWT值 type: JWTUtils.CONTRACT(合同中心)  JWTUtils.SMS（短信中心）  JWTUtils.LOCATION（定位相关）
         //JWTUtils.XIAODAI(小贷系统)  JWTUtils.FKZX(风控中心)
         JWTUtils.getJWT(type)  
         JWTUtils.getJWT(type，playholder) //playholder example : {"name":"zxh"} 
         
-   8.progressDialog 使用
+   9.progressDialog 使用
     
         //初始化  resId:资源id  hint:提示内容（默认"加载中..."）
         val progress = ProgressDialogFragment.newInstance(resId,hint)
@@ -207,7 +266,6 @@ gradle配置
         progress.show(supportFragmentManager)
         //消失
         progress.dismiss()
-
 
 
         
