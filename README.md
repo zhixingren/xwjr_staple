@@ -99,10 +99,10 @@ gradle配置
         
      在baseActivity里的onCreate方法增加如下内容：
         if (AppStatusUtils.isNeedRestart(this)) {
-                AppStatusUtils.reStartApp(this);
+                AppStatusUtils.reStartApp(this,activity);
             }
             
-     如果开屏页没有继承StapleSplashActivity，需要在开屏页增加如下内容：
+     如果开屏页没有继承StapleSplashActivity，需要在开屏页 最先调用的地方 增加如下内容(注意：尤其开屏页也继承了baseActivity)：
          AppStatusUtils.saveHaveActivityKilledStatus(this, "");
             
             
