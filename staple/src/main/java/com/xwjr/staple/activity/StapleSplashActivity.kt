@@ -25,6 +25,7 @@ import com.xwjr.staple.presenter.StapleHttpContract
 import com.xwjr.staple.presenter.StapleHttpPresenter
 import java.io.File
 import com.xwjr.staple.permission.PermissionRequest.PermissionListener
+import com.xwjr.staple.util.AppStatusUtils
 import java.util.ArrayList
 
 
@@ -58,6 +59,7 @@ abstract class StapleSplashActivity : AppCompatActivity(), StapleHttpContract {
         queryUpdateInfo()
         querySplashInfo()
         setWindowBackground()
+        AppStatusUtils.saveHaveActivityKilledStatus(this, "")
     }
 
     /**
