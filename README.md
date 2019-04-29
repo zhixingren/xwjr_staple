@@ -152,6 +152,8 @@ gradle配置
      tags.add("B");
      JPushInterface.setTags(this, 5233, tags);
      
+     JpushManager.defaultJpushView(this);//设置默认推送样式，不设置则使用JPush默认样式
+
  5.身份证识别/活体检测相关功能
  
         //尽量提前调用
