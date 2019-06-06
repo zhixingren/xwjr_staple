@@ -17,6 +17,15 @@ object StapleHttpUrl {
         }
     }
 
+    private fun getRiskShieldBaseUrl(): String {
+        return if (StapleConfig.isDebug) {
+            "http://p2psp.kfxfd.cn:9080"
+        } else {
+            "http://riskshield.xwjr.com"
+        }
+    }
+
+
     /**
      * 获取webview需要配置域名list
      */
@@ -58,21 +67,21 @@ object StapleHttpUrl {
      * 风控中心身份识别状态
      */
     fun queryRiskShieldStep():String{
-        return getBaseUrl() + "/riskshield/verify/steps/MYSELF/" +StapleConfig.getRiskShieldSource()
+        return getRiskShieldBaseUrl() + "/riskshield/verify/steps/MYSELF/" +StapleConfig.getRiskShieldSource()
     }
 
     /**
      * 上传身份证识别数据
      */
     fun upLoadIDCardInfo(): String {
-        return getBaseUrl() + "/riskshield/verify/ocrIdCard/MYSELF"
+        return getRiskShieldBaseUrl() + "/riskshield/verify/ocrIdCard/MYSELF"
     }
 
     /**
      * 上传活体识别数据
      */
     fun upLoadLiveInfo(): String {
-        return getBaseUrl() + "/riskshield/verify/faceId/MYSELF"
+        return getRiskShieldBaseUrl() + "/riskshield/verify/faceId/MYSELF"
     }
 
     /**
